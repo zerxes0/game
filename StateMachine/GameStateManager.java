@@ -1,0 +1,56 @@
+package StateMachine;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+import GUI.GameGraphics;
+
+public class GameStateManager {
+	//FIELDS ---------------	
+	private GameState menu;
+	private GameState world;
+	private GameState battle;
+	private GameState pause;
+	private GameState gameOver;
+	private GameState currentState;
+    public GameGraphics graphics;
+    //---------------------
+	
+	public GameStateManager( Dimension dimension ){	
+        graphics = new GameGraphics( dimension );
+        
+		menu = new Menu(this);
+		world = new World(this);
+		battle = new Battle(this);
+		pause = new Pause(this);
+		gameOver = new GameOver(this);
+		
+        currentState = menu;     
+	}
+	
+	public void draw(){     
+		currentState.draw();
+	}
+	
+    //SETTERS ----------------
+    public void menu(){ currentState.menu(); }
+    public void world(){ currentState.world(); }
+    public void battle(){ currentState.battle(); }
+    public void pause(){ currentState.pause(); }
+    public void gameOver(){ currentState.gameOver(); }	
+    public void setGameState( GameState state ){ currentState = state;}
+    //------------------------
+
+    //GETTERS ---------------
+    public GameState getMenu(){ return menu; }
+    public GameState getWorld(){ return world; }
+    public GameState getBattle(){ return battle; }
+    public GameState getPause(){ return pause; }
+    public GameState getGameOver(){ return gameOver; }
+    public GameGraphics graphics(){ return graphics; }
+    public Component getComponent(){ return (Component)world; }
+    public Graphics getGraphics(){ return graphics.getGraphics(); }
+    //----------------------
+
+}
