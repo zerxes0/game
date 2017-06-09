@@ -126,8 +126,12 @@ public class World extends JComponent implements  GameState{
                 anim.setPixels( 0 );
                 System.out.println("ATTACK");
                 anim.setCurrentSheet(2);
+                
            }
+            if( e.getKeyCode() == KeyEvent.VK_E){
+            	pause();
             	
+            }	
             
         }//func
 
