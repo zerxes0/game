@@ -24,7 +24,7 @@ public class World extends JComponent implements  GameState{
 
 	public World( GameStateManager newGameState ){
 		state = newGameState;
-		jugador = new Player("lol",100, 300,300 );
+		jugador = new Player("lol",100, 300,300, 20, 20);
 		anim = jugador.getAnimation();
         this.addKeyListener( lKey );
         this.setFocusable(true);      
