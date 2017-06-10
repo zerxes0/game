@@ -8,7 +8,6 @@ public abstract class Character extends GameObject {
      * que tendra el personaje
      */
 
-    public Character(){}
     public Character( String name, float life ){
         this.name = name;
         this.life = life;
