@@ -32,7 +32,7 @@ public class Menu implements GameState {
 	@Override
 	public void world() {
 		System.out.println( " Entering World state"	 );
-		AudioManager.playMusic("/Resources/Music/magic.mp3");
+		//AudioManager.playMusic("/Resources/Music/magic.mp3");
         state.setGameState( state.getWorld() );		
 	}
 
