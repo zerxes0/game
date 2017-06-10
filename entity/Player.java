@@ -1,10 +1,11 @@
-package Data;
+package entity;
 
 import java.awt.Rectangle;
 
 import GUI.Animator;
-import GUI.ImageLoader;
-import GUI.SpriteSheet;
+import systems.Collider;
+import systems.ImageLoader;
+import systems.SpriteSheet;
 
 public class Player extends Character {
 	private SpriteSheet[] sheet;

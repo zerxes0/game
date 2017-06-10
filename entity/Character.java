@@ -1,4 +1,4 @@
-package Data;
+package entity;
 
 public abstract class Character extends GameObject {
     public float life;

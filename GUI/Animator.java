@@ -1,6 +1,6 @@
 package GUI;
 
-import GUI.SpriteSheet;
+import systems.SpriteSheet;
 
 public class Animator {
 	private SpriteSheet[] sheet = new SpriteSheet[3];

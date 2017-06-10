@@ -6,10 +6,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JComponent;
 
-import Data.AudioManager;
-import Data.Player;
 import GUI.Animator;
 import GUI.GameGraphics;
+import entity.Player;
+import systems.AudioManager;
 
 @SuppressWarnings("serial")
 public class World extends JComponent implements  GameState{

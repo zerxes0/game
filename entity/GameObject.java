@@ -1,4 +1,4 @@
-package Data;
+package entity;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
