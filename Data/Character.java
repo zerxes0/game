@@ -3,10 +3,6 @@ package Data;
 public abstract class Character extends GameObject {
     public float life;
     public String name;  
-    /*TODO
-     * Implementacion de las habilidades de batalla
-     * que tendra el personaje
-     */
 
     public Character( String name, float life ){
         this.name = name;
