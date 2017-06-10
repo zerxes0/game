@@ -15,11 +15,11 @@ public class Player extends Character {
      * Atributos/funciones del sistema de combate.
      */
 
-    public Player( String name, float life, int x, int y, int w, int h ){
+    public Player( String name, float life, int x, int y, int w, int h, int ox, int oy ){
         super( name, life, x, y );
         init();
         animator = new Animator( sheet );
-        collider = new Collider( x, y , w, h );
+        collider = new Collider( x, y , w, h, ox, oy );
     }
     
     public void init(){
@@ -39,5 +39,6 @@ public class Player extends Character {
     public void setSheet( int i, String path ){ sheet[i] = new SpriteSheet( ImageLoader.loadImage(path) ); }
 
     public Animator getAnimation(){ return animator; }
+    public void updateBounds(){ collider.updateBound(x, y); }
     public Rectangle getBounds(){ return collider.getBounds(); }
 }

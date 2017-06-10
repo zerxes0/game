@@ -24,7 +24,7 @@ public class World extends JComponent implements  GameState{
 
 	public World( GameStateManager newGameState ){
 		state = newGameState;
-		jugador = new Player("lol",100, 300,300, 20, 20);
+		jugador = new Player("lol",100, 300,300, 20, 20, 10, 15);
 		anim = jugador.getAnimation();
         this.addKeyListener( lKey );
         this.setFocusable(true);      
@@ -60,6 +60,11 @@ public class World extends JComponent implements  GameState{
                 attack();
 		    else
                 idle();
+
+            g.setColor( Color.red );
+            jugador.updateBounds();
+            g.fillRect( (int)jugador.getBounds().getX(), (int)jugador.getBounds().getY(), (int)jugador.getBounds().getWidth(),
+                    (int)jugador.getBounds().getHeight() );
 		// ------------------------------
 		//g.dispose();
 	}
@@ -101,25 +106,25 @@ public class World extends JComponent implements  GameState{
             g = state.getGraphics();
             if( e.getKeyCode() == KeyEvent.VK_LEFT ){
                 System.out.println("left");
-                jugador.setX( jugador.getX() - 10); 
+                jugador.setX( jugador.getX() - 3 ); 
                 if ( anim.getCurrentSheet() != 1 )
                     anim.setCurrentSheet(1);
             }
             if( e.getKeyCode() == KeyEvent.VK_RIGHT ){
                 System.out.println("right");
-                jugador.setX( jugador.getX() + 10 );
+                jugador.setX( jugador.getX() + 3 );
                 if ( anim.getCurrentSheet() != 1 )
                     anim.setCurrentSheet(1);
             }
             if( e.getKeyCode() == KeyEvent.VK_UP ){
                 System.out.println("up");
-                jugador.setY( jugador.getY() - 10); 
+                jugador.setY( jugador.getY() - 3 ); 
                 if ( anim.getCurrentSheet() != 1 )
                     anim.setCurrentSheet(1);
             }
             if( e.getKeyCode() == KeyEvent.VK_DOWN ){
                 System.out.println("down");
-                jugador.setY( jugador.getY() + 10);
+                jugador.setY( jugador.getY() + 3 );
                 if ( anim.getCurrentSheet() != 1 )
                     anim.setCurrentSheet(1);
             }
