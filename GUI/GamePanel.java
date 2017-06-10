@@ -35,7 +35,7 @@ public class GamePanel extends JPanel{
     
     public void init(){
     	Ticker();
-        //gameStateMachine.menu();
+        gameStateMachine.world();
     }
 
     private void Ticker(){

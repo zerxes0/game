@@ -3,6 +3,7 @@ package StateMachine;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import Data.AudioManager;
 import GUI.GameGraphics;
 
 public class Menu implements GameState {
@@ -30,7 +31,8 @@ public class Menu implements GameState {
 
 	@Override
 	public void world() {
-		System.out.println( " Entering World state" );
+		System.out.println( " Entering World state"	 );
+		AudioManager.playMusic("/Resources/Music/magic.mp3");
         state.setGameState( state.getWorld() );		
 	}
 

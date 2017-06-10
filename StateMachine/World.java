@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JComponent;
 
+import Data.AudioManager;
 import Data.Player;
 import GUI.Animator;
 import GUI.GameGraphics;
@@ -26,7 +27,7 @@ public class World extends JComponent implements  GameState{
 		jugador = new Player("lol",100, 300,300 );
 		anim = jugador.getAnimation();
         this.addKeyListener( lKey );
-        this.setFocusable(true);
+        this.setFocusable(true);      
 	}
     
 
@@ -45,7 +46,7 @@ public class World extends JComponent implements  GameState{
 
 	@Override
 	public void draw(){
-        System.out.println( "World draw" );
+        //System.out.println( "World draw" );
         g = state.getGraphics();
 
         //ESCENARIO ---------------------
