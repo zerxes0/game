@@ -9,7 +9,7 @@ import javax.sound.sampled.Clip;
 
 public class AudioManager {
 	
-	private static AudioStream music;
+	//private static AudioStream music;
 	private static AudioStream sound;
 	
 	public static void playMusic( final String path){

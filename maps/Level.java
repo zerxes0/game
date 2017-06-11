@@ -37,7 +37,7 @@ public class Level {
         // de la posicion son autocalculados al usar el 64*64
         // por ejemplo el segundo sprite en nuestra sprite sheet, seria el (0,1)
         // ( 0, 1 ) = ( 0,64) -> la posicion en pixeles de nuestro sprite
-        tiles = tile( index, x*64, x*64, 64, 64 ) ;
+        tiles = tile( index, x*64, y*64, 64, 64 ) ;
     }
 
     private static BufferedImage tile( int i, int x, int y, int width, int height ){
@@ -60,11 +60,15 @@ public class Level {
         for( int i = 0; i < aux.length; i++ ){
             for( int j = 0; j < aux[i].length; j++ ){
             	if ( j%2 == 0 ){
-                    aux[i][j] = new Tile( tiles, (i*64)-32, (j*16)-48 );
-            		deco[i][j] = new Tile( null,(i*64)-32, (j*16)-48 );
+                    // TODO Cambiar 17 a 16
+                    // en J*17 el numero normal es 16, lo tengo
+                    // en 17 de momento para ver que tal se ve
+                    // con una rejilla 
+                    aux[i][j] = new Tile( tiles, (i*64)-32, (j*17)-48 );
+            		deco[i][j] = new Tile( null,(i*64)-32, (j*17)-48 );
             	}else{
-                    aux[i][j] = new Tile( tiles, i*64, (j*16)-48 );
-                    deco[i][j] = new Tile( null,(i*64)-32, (j*16)-48 );
+                    aux[i][j] = new Tile( tiles, i*64, (j*17)-48 );
+                    deco[i][j] = new Tile( null,(i*64), (j*17)-48 );
             	}
             }
         }
@@ -76,15 +80,29 @@ public class Level {
 
     private static void initDeco( int index ){
         deco = level[index].getDeco();
-        loadTileType( index, 5 , 0 );
+        loadTileType( index, 7 , 8 ); //medio
+        setDeco( 4, 3 ); //medio
+        loadTileType( index, 9 , 8 );
+        setDeco(5,2); //esquina derecha
+        loadTileType( index, 6, 8 ); //esquina inferior
+        setDeco( 5, 3 ); //esquina inferior
+        loadTileType( index, 3, 8 );
         setDeco( 4, 4 );
+        loadTileType( index, 0, 8 );
+        setDeco( 4, 5 );
+        loadTileType( index, 2, 8 );
+        setDeco( 5, 4 );//medio inferior    
+        loadTileType( index, 2, 8 );
+        System.out.println( deco[3][3].getX() + "," + deco[3][3].getY() );
+
+       
     }
 
     private static void level1( String path ){
         //el index nunca va a cambiar
         int index = 0;
         initLevelComponents( index, path );
-        loadTileType( index, 2, 0 );
+        loadTileType( index, 1, 0 );
         initTiles();
         initDeco(index);
     }

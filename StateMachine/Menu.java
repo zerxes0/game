@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import GUI.GameGraphics;
-import systems.AudioManager;
 
 public class Menu implements GameState {
 
@@ -21,7 +20,7 @@ public class Menu implements GameState {
         g = state.getGraphics();
 		g.setColor( Color.blue );
 		g.fillRect(0, 0, (int)GameGraphics.dimension.getWidth(), (int)GameGraphics.dimension.getHeight() );
-		state.graphics().paint(state.getGraphics());
+		//state.getGraphics().paint(state.getGraphics());
 	}
 	
 	@Override

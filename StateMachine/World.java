@@ -1,6 +1,5 @@
 package StateMachine;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -39,6 +38,8 @@ public class World extends JComponent implements  GameState{
         this.setFocusable(true);      
 
 	}
+	
+	public KeyListener getListen(){ return lKey; }
     
     private void idle(){
         //aqui esta idle, idle en nuestro contexto
@@ -88,13 +89,12 @@ public class World extends JComponent implements  GameState{
 		    else
                 idle();
 
-            g.setColor( Color.red );
+            /*g.setColor( Color.red );
             jugador.updateBounds();
             g.fillRect( (int)jugador.getBounds().getX(), (int)jugador.getBounds().getY(), (int)jugador.getBounds().getWidth(),
-                    (int)jugador.getBounds().getHeight() );
-		// ------------------------------
-		//g.dispose();
-		state.graphics().paint( state.getGraphics() );
+                    (int)jugador.getBounds().getHeight() );*/
+		// ------------------------------		
+		//state.graphics().paint( state.getGraphics() );
 	}
 	
 	@Override
@@ -126,6 +126,7 @@ public class World extends JComponent implements  GameState{
 	}
 
     private class ListenKeys implements KeyListener{
+    	
       	@Override
         public void keyPressed( KeyEvent e ){
             //en cada Key Press solo debemos alterar la sheet que se reproducira

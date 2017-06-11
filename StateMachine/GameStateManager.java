@@ -15,6 +15,8 @@ public class GameStateManager {
 	private GameState gameOver;
 	private GameState currentState;
     public GameGraphics graphics;
+    
+    public Graphics g;
     //---------------------
 	
 	public GameStateManager( Dimension dimension ){	
@@ -40,6 +42,7 @@ public class GameStateManager {
     public void pause(){ currentState.pause(); }
     public void gameOver(){ currentState.gameOver(); }	
     public void setGameState( GameState state ){ currentState = state;}
+    public void setG( Graphics g ){ this.g = g; }
     //------------------------
 
     //GETTERS ---------------
@@ -50,7 +53,7 @@ public class GameStateManager {
     public GameState getGameOver(){ return gameOver; }
     public GameGraphics graphics(){ return graphics; }
     public Component getComponent(){ return (Component)world; }
-    public Graphics getGraphics(){ return graphics.getGraphics(); }
+    public Graphics getGraphics(){ return this.g; }
     //----------------------
 
 }
