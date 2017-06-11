@@ -1,5 +1,7 @@
 package entity;
 
+import Data.GameObject;
+
 public abstract class Character extends GameObject {
     public float life;
     public String name;  
