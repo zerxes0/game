@@ -1,31 +1,41 @@
 package GUI;
 
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 
-@SuppressWarnings("serial")
-public class GameFrame extends JFrame {
+public class GameFrame {
 
-    //se hace una funcion init en el Frame para que al
-    //instanciar el objeto evitemos un warning del idle
-    //tambien es buena practica mantener un constructor
-    //bajo 6 lineas y con las funciones se entiende mas
-    //que estamos haciendo.
+	
+	private JFrame frame;
+	private Canvas canvas;
+	
     public void init( int width, int height ){
-    	GamePanel panel = new GamePanel( new Dimension( width, height ) );
-        this.setSize( width , height );
-        this.setVisible(true);
-        this.setContentPane(panel);
-        this.getContentPane().setBackground( Color.BLACK);
-        this.setResizable(false);
-        this.setLayout( new FlowLayout());
-        panel.init();
+    	frame = new JFrame("juego");
+    	frame.setSize(width, height);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+        frame.getContentPane().setBackground( Color.DARK_GRAY);        
+        //frame.setFocusable(false);
+        
+		canvas = new Canvas();
+		canvas.setPreferredSize(new Dimension(width, height));
+		canvas.setMaximumSize(new Dimension(width, height));
+		canvas.setMinimumSize(new Dimension(width, height));
+		
+		frame.add(canvas);
+		frame.pack();
     }
+    
+	public Canvas getCanvas(){
+		return canvas;
+	}
+	public JFrame getFrame(){
+		return frame;
+	}
 
-    public GameFrame(){
-        super( "Juego" );
-    }
 }

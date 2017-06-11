@@ -9,16 +9,15 @@ import javax.swing.JComponent;
 public class GameGraphics extends JComponent{
 	
 	public static Dimension dimension;
-
+	@Override
+	public void paint( Graphics g){}
+	/*
+	@Override
 	public void paintComponent( Graphics g ){
-		//System.out.println("Repainting...");
-		/*g.setColor( Color.white );	
-		g.fillRect(0, 0, (int)this.getWidth(), (int)this.getHeight() );*/
-	}
+	}*/
 		
 	public GameGraphics( Dimension dimension ){
 		super();	
-		
 		this.setSize( dimension );
 		this.setPreferredSize( dimension );	
 		GameGraphics.dimension = dimension;
