@@ -9,12 +9,11 @@ import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
-import GUI.GameGraphics;
 import entity.Player;
 import systems.Animator;
-import systems.AudioManager;
 import maps.GameMap;
 import maps.Level;
+import maps.Tile;
 
 @SuppressWarnings("serial")
 public class World extends JComponent implements  GameState{
@@ -23,7 +22,7 @@ public class World extends JComponent implements  GameState{
 	private GameStateManager state;
     private Player jugador;
     private GameMap lvl;
-    private ArrayList<BufferedImage> tiles;
+    private Tile[][] tiles;
     private Graphics g;
     private ListenKeys lKey = new ListenKeys();
     private Animator anim;
@@ -33,11 +32,12 @@ public class World extends JComponent implements  GameState{
 		state = newGameState;
 		jugador = new Player("lol",100, 300,300, 20, 20, 10, 15);
 		anim = jugador.getAnimation();
-        this.addKeyListener( lKey );
-        this.setFocusable(true);      
         Level.generateLevel( 0 );
         lvl = Level.getLevel( 0 );
         tiles = lvl.getTiles();
+        this.addKeyListener( lKey );
+        this.setFocusable(true);      
+
 	}
     
     public void idle(){
@@ -54,12 +54,11 @@ public class World extends JComponent implements  GameState{
     }
 
     public void drawMap(){
-        int i = 0;
-        for( int y = -48; y < lvl.getY(); y += 16  ){
-            for( int x = ( i%2 == 0 ) ? (x = 0):( x = -32); x < lvl.getX(); x+=64 ){
-                g.drawImage( tiles.get(0), x, y, null );
-            }   
-            i++;
+        for( int i = 0; i < tiles.length; i++ ){
+            for(int j = 0; j < tiles[i].length; j++ ){
+                g.drawImage( tiles[i][j].getSprite(), tiles[i][j].getX(), tiles[i][j].getY(), null );
+                //System.out.println( tiles[i][j].getX()+ "," + tiles[i][j].getY());
+            }//inner for
         }//for
     }//func
 
