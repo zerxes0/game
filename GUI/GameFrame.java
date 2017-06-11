@@ -1,6 +1,8 @@
 package GUI;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 
@@ -17,6 +19,9 @@ public class GameFrame extends JFrame {
         this.setSize( width , height );
         this.setVisible(true);
         this.setContentPane(panel);
+        this.getContentPane().setBackground( Color.BLACK);
+        this.setResizable(false);
+        this.setLayout( new FlowLayout());
         panel.init();
     }
 
