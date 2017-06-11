@@ -60,7 +60,6 @@ public class World extends JComponent implements  GameState{
                 g.drawImage( tiles.get(0), x, y, null );
             }   
             i++;
-            System.out.println(i);
         }//for
     }//func
 
