@@ -2,7 +2,7 @@ package entity;
 
 import java.awt.Rectangle;
 
-import GUI.Animator;
+import systems.Animator;
 import systems.Collider;
 import systems.ImageLoader;
 import systems.SpriteSheet;

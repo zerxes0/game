@@ -7,9 +7,8 @@ import javax.imageio.ImageIO;
 
 public abstract class GameObject{
   
-    public int x;
-    public int y;
-    public BufferedImage sprite;
+    protected int x;
+    protected int y;
     
     /* TODO
      * Implementar colisiones y determinar si un objeto funciona con 
@@ -23,11 +22,11 @@ public abstract class GameObject{
        this.y = y;
     }
 
-    public BufferedImage getSprite() { return sprite; }
+   // public BufferedImage getSprite() { return sprite; }
     public int getX() { return x; }
 	public int getY() { return y; }
 
 	public void setX(int x) { this.x = x; }
 	public void setY(int y) { this.y = y; }
-	public void setSprite( String sprite ) throws IOException { this.sprite = ImageIO.read( new File( sprite ) ); }
+	//public void setSprite( String sprite ) throws IOException { this.sprite = ImageIO.read( new File( sprite ) ); }
 }
