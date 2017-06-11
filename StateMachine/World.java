@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
@@ -23,6 +21,7 @@ public class World extends JComponent implements  GameState{
     private Player jugador;
     private GameMap lvl;
     private Tile[][] tiles;
+    private Tile[][] deco;
     private Graphics g;
     private ListenKeys lKey = new ListenKeys();
     private Animator anim;
@@ -35,29 +34,38 @@ public class World extends JComponent implements  GameState{
         Level.generateLevel( 0 );
         lvl = Level.getLevel( 0 );
         tiles = lvl.getTiles();
+        deco = lvl.getDeco();
         this.addKeyListener( lKey );
         this.setFocusable(true);      
 
 	}
     
-    public void idle(){
+    private void idle(){
         //aqui esta idle, idle en nuestro contexto
         //se usar para animacion default y walking
 		g.drawImage( anim.getSprites( 
                 anim.getCurrentSheet() ).crop( anim.state() , 0, 42, 42), jugador.getX() , jugador.getY(), null );
     }
 
-    public void attack(){
+    private void attack(){
 		g.drawImage( anim.getSprites(2).crop( anim.state(), 0, 80, 80), jugador.getX(), jugador.getY()-38, null );
 		if( anim.state() >= 800 ) // el limite de la sprite sheet es 800 asi que al llegar se acabo el ataque
 		    anim.setCurrentSheet(0);
+    }
+
+
+    private void loadMapDeco(){
+        for( int i = 0; i < tiles.length; i++ ){
+            for(int j = 0; j < tiles[i].length; j++ ){
+                g.drawImage( deco[i][j].getSprite(), deco[i][j].getX(), deco[i][j].getY(), null );
+            }//inner for
+        }//for
     }
 
     public void drawMap(){
         for( int i = 0; i < tiles.length; i++ ){
             for(int j = 0; j < tiles[i].length; j++ ){
                 g.drawImage( tiles[i][j].getSprite(), tiles[i][j].getX(), tiles[i][j].getY(), null );
-                //System.out.println( tiles[i][j].getX()+ "," + tiles[i][j].getY());
             }//inner for
         }//for
     }//func
@@ -71,6 +79,7 @@ public class World extends JComponent implements  GameState{
         //g.setColor( Color.green );
 		//g.fillRect( 0, 0, (int)GameGraphics.dimension.getWidth(), (int)GameGraphics.dimension.getHeight() );
         drawMap();
+        loadMapDeco();
 		// ------------------------------
         
         // JUGADOR ---------------------  

@@ -7,6 +7,7 @@ public class GameMap extends GameObject {
 
     private SpriteSheet sheet;
     private Tile[][] tiles = new Tile[13][37];
+    private Tile[][] deco = new Tile[13][37];
 
     public GameMap( SpriteSheet sheet, int widht, int height ){
         super( widht, height );
@@ -18,5 +19,6 @@ public class GameMap extends GameObject {
 
     public SpriteSheet getSheet() { return sheet; }
     public Tile[][] getTiles() { return tiles; }
+    public Tile[][] getDeco(){ return deco; }
 
 }

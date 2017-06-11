@@ -13,6 +13,7 @@ public class Level {
     //AUXILIAR FIELDS
     private static BufferedImage tiles;
     private static Tile[][] aux;
+    private static Tile[][] deco;
     private static SpriteSheet sheet;
     //-------------------
 
@@ -28,6 +29,7 @@ public class Level {
     }//func
 
     private static void loadTileType( int index, int x, int y ){
+        //ESTA FUNCION ES LA QUE CARGA LOS SPRITES( tiles )
         //recibimos un index, el index se refiere al nivel que vamos a editar
         // la x y la y hacen referencia a la posicion del frame(sprite)
         // en la sprite sheet, se debe usar un sistema de coordenadas
@@ -51,18 +53,32 @@ public class Level {
         sheet = new SpriteSheet( ImageLoader.loadImage( path ) );
         level[index] = new GameMap( sheet, 800, 600 );
         aux = level[index].getTiles();
+        deco = level[index].getDeco();
     }
 
     private static void initTiles(){
         for( int i = 0; i < aux.length; i++ ){
             for( int j = 0; j < aux[i].length; j++ ){
-            	if ( j%2 == 0 )
+            	if ( j%2 == 0 ){
                     aux[i][j] = new Tile( tiles, (i*64)-32, (j*16)-48 );
-                else
+            		deco[i][j] = new Tile( null,(i*64)-32, (j*16)-48 );
+            	}else{
                     aux[i][j] = new Tile( tiles, i*64, (j*16)-48 );
+                    deco[i][j] = new Tile( null,(i*64)-32, (j*16)-48 );
+            	}
             }
         }
     }//func
+
+    private static void setDeco( int x, int y){
+        deco[x][y].setSprite(tiles);
+    }
+
+    private static void initDeco( int index ){
+        deco = level[index].getDeco();
+        loadTileType( index, 5 , 0 );
+        setDeco( 4, 4 );
+    }
 
     private static void level1( String path ){
         //el index nunca va a cambiar
@@ -70,9 +86,12 @@ public class Level {
         initLevelComponents( index, path );
         loadTileType( index, 2, 0 );
         initTiles();
+        initDeco(index);
     }
 
     public static GameMap getLevel( int index ){
         return level[index];
     }
+
+    public static Tile[][] getDeco( int index ){ return deco; }
 }
