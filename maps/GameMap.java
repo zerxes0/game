@@ -1,15 +1,12 @@
 package maps;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
-import entity.GameObject;
+import Data.GameObject;
 import systems.SpriteSheet;
 
 public class GameMap extends GameObject {
 
     private SpriteSheet sheet;
-    private ArrayList<BufferedImage> tile;
+    private Tile[][] tiles = new Tile[13][37];
 
     public GameMap( SpriteSheet sheet, int widht, int height ){
         super( widht, height );
@@ -17,8 +14,9 @@ public class GameMap extends GameObject {
     }
 
     public void setSheet(SpriteSheet tiles) { this.sheet = tiles; }
-    public void setTiles(ArrayList<BufferedImage> tile) { this.tile = tile; }
+    public void setTiles(Tile[][] tiles) { this.tiles = tiles; }
 
     public SpriteSheet getSheet() { return sheet; }
-    public ArrayList<BufferedImage> getTiles() { return tile; }
+    public Tile[][] getTiles() { return tiles; }
+
 }
