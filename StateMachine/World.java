@@ -4,12 +4,17 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 import javax.swing.JComponent;
 
-import GUI.Animator;
 import GUI.GameGraphics;
 import entity.Player;
+import systems.Animator;
 import systems.AudioManager;
+import maps.GameMap;
+import maps.Level;
 
 @SuppressWarnings("serial")
 public class World extends JComponent implements  GameState{
@@ -17,6 +22,8 @@ public class World extends JComponent implements  GameState{
     //FIELDS -----------------
 	private GameStateManager state;
     private Player jugador;
+    private GameMap lvl;
+    private ArrayList<BufferedImage> tiles;
     private Graphics g;
     private ListenKeys lKey = new ListenKeys();
     private Animator anim;
@@ -28,9 +35,11 @@ public class World extends JComponent implements  GameState{
 		anim = jugador.getAnimation();
         this.addKeyListener( lKey );
         this.setFocusable(true);      
+        Level.generateLevel( 0 );
+        lvl = Level.getLevel( 0 );
+        tiles = lvl.getTiles();
 	}
     
-
     public void idle(){
         //aqui esta idle, idle en nuestro contexto
         //se usar para animacion default y walking
@@ -44,15 +53,26 @@ public class World extends JComponent implements  GameState{
 		    anim.setCurrentSheet(0);
     }
 
+    public void drawMap(){
+        int i = 0;
+        for( int y = -48; y < lvl.getY(); y += 16  ){
+            for( int x = ( i%2 == 0 ) ? (x = 0):( x = -32); x < lvl.getX(); x+=64 ){
+                g.drawImage( tiles.get(0), x, y, null );
+            }   
+            i++;
+            System.out.println(i);
+        }//for
+    }//func
+
 	@Override
 	public void draw(){
         //System.out.println( "World draw" );
         g = state.getGraphics();
 
         //ESCENARIO ---------------------
-        g.setColor( Color.green );
-		g.fillRect( 0, 0, (int)GameGraphics.dimension.getWidth(), (int)GameGraphics.dimension.getHeight() );
-		state.graphics().paint(state.getGraphics());
+        //g.setColor( Color.green );
+		//g.fillRect( 0, 0, (int)GameGraphics.dimension.getWidth(), (int)GameGraphics.dimension.getHeight() );
+        drawMap();
 		// ------------------------------
         
         // JUGADOR ---------------------  
@@ -67,6 +87,7 @@ public class World extends JComponent implements  GameState{
                     (int)jugador.getBounds().getHeight() );
 		// ------------------------------
 		//g.dispose();
+		state.graphics().paint( state.getGraphics() );
 	}
 	
 	@Override
@@ -106,25 +127,25 @@ public class World extends JComponent implements  GameState{
             g = state.getGraphics();
             if( e.getKeyCode() == KeyEvent.VK_LEFT ){
                 System.out.println("left");
-                jugador.setX( jugador.getX() - 3 ); 
+                jugador.setX( jugador.getX() - 4 ); 
                 if ( anim.getCurrentSheet() != 1 )
                     anim.setCurrentSheet(1);
             }
             if( e.getKeyCode() == KeyEvent.VK_RIGHT ){
                 System.out.println("right");
-                jugador.setX( jugador.getX() + 3 );
+                jugador.setX( jugador.getX() + 4 );
                 if ( anim.getCurrentSheet() != 1 )
                     anim.setCurrentSheet(1);
             }
             if( e.getKeyCode() == KeyEvent.VK_UP ){
                 System.out.println("up");
-                jugador.setY( jugador.getY() - 3 ); 
+                jugador.setY( jugador.getY() - 4 ); 
                 if ( anim.getCurrentSheet() != 1 )
                     anim.setCurrentSheet(1);
             }
             if( e.getKeyCode() == KeyEvent.VK_DOWN ){
                 System.out.println("down");
-                jugador.setY( jugador.getY() + 3 );
+                jugador.setY( jugador.getY() + 4 );
                 if ( anim.getCurrentSheet() != 1 )
                     anim.setCurrentSheet(1);
             }
