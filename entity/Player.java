@@ -2,15 +2,16 @@ package entity;
 
 import java.awt.Rectangle;
 
+import Data.SpriteSheet;
 import systems.Animator;
 import systems.Collider;
 import systems.ImageLoader;
-import systems.SpriteSheet;
 
 public class Player extends Character {
 	private SpriteSheet[] sheet;
     private Animator animator;
     private Collider collider;
+    private int velocity = 3;
    
     /*TODO
      * Atributos/funciones del sistema de combate.
@@ -37,9 +38,11 @@ public class Player extends Character {
         setSheet( 2,"/Resources/Sprites/attack.png");
     }
 
+    public void setVelocity( int velocity ){ this.velocity = velocity; }
     public void setSheet( int i, String path ){ sheet[i] = new SpriteSheet( ImageLoader.loadImage(path) ); }
 
     public Animator getAnimation(){ return animator; }
+    public int getVelocity(){ return this.velocity; }
     public void updateBounds(){ collider.updateBound(x, y); }
     public Rectangle getBounds(){ return collider.getBounds(); }
 }
