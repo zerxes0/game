@@ -1,5 +1,7 @@
 package systems;
 
+import Data.SpriteSheet;
+
 public class Animator {
 	private SpriteSheet[] sheet = new SpriteSheet[3];
     private int initialSpritePixels = 0;
