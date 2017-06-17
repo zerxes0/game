@@ -1,16 +1,17 @@
 package StateMachine;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JComponent;
 
+import maps.Tile;
+import maps.Level;
+import maps.GameMap;
 import entity.Player;
 import systems.Animator;
-import maps.GameMap;
-import maps.Level;
-import maps.Tile;
 
 @SuppressWarnings("serial")
 public class World extends JComponent implements  GameState{
@@ -28,17 +29,23 @@ public class World extends JComponent implements  GameState{
 
 	public World( GameStateManager newGameState ){
 		state = newGameState;
-		jugador = new Player("lol",100, 300,300, 20, 20, 10, 15);
+		loadPlayer();
+		loadLevel();   
+        this.setFocusable(true);     
+        this.addKeyListener( lKey );        
+	}
+	
+	private void loadPlayer(){
+		jugador = new Player("lol",100, 800/2,600/2, 20, 20, 10, 15);
 		anim = jugador.getAnimation();
+	}
+	
+	private void loadLevel(){
         Level.generateLevel( 0 );
         lvl = Level.getLevel( 0 );
         tiles = lvl.getTiles();
         deco = lvl.getDeco();
-        this.addKeyListener( lKey );
-        this.setFocusable(true);      
-
 	}
-	
 	public KeyListener getListen(){ return lKey; }
     
     private void idle(){
@@ -48,6 +55,13 @@ public class World extends JComponent implements  GameState{
                 anim.getCurrentSheet() ).crop( anim.state() , 0, 42, 42), jugador.getX() , jugador.getY(), null );
     }
 
+    private void move(){
+        //aqui esta idle, idle en nuestro contexto
+        //se usar para animacion default y walking
+		g.drawImage( anim.getSprites( 
+                anim.getCurrentSheet() ).crop( anim.state() , 0, 42, 42), jugador.getX() , jugador.getY(), null );
+    }
+    
     private void attack(){
 		g.drawImage( anim.getSprites(2).crop( anim.state(), 0, 80, 80), jugador.getX(), jugador.getY()-38, null );
 		if( anim.state() >= 800 ) // el limite de la sprite sheet es 800 asi que al llegar se acabo el ataque
@@ -63,7 +77,7 @@ public class World extends JComponent implements  GameState{
         }//for
     }
 
-    public void drawMap(){
+    private void drawMap(){
         for( int i = 0; i < tiles.length; i++ ){
             for(int j = 0; j < tiles[i].length; j++ ){
                 g.drawImage( tiles[i][j].getSprite(), tiles[i][j].getX(), tiles[i][j].getY(), null );
@@ -71,23 +85,41 @@ public class World extends JComponent implements  GameState{
         }//for
     }//func
 
+    private void drawSquares(){	
+        g.setColor( Color.white );
+        int x,y;
+        for( int i = 0; i < 14; i++ ){
+            for(int j = 0; j < 40 ; j++ ){
+            	if ( j%2 != 0 ){ 
+            		x = i*64;
+            		y = ( j*16 )-32;
+            		g.drawLine( x, y, x+64, y + 32 );
+            		g.drawLine( x, y,x-64, y + 32);
+            	}
+            }//inner for
+        }//for
+    }
+
 	@Override
 	public void draw(){
         //System.out.println( "World draw" );
-        g = state.getGraphics();
+		g = state.getGraphics();
 
         //ESCENARIO ---------------------
         //g.setColor( Color.green );
 		//g.fillRect( 0, 0, (int)GameGraphics.dimension.getWidth(), (int)GameGraphics.dimension.getHeight() );
-        drawMap();
+        drawMap();     
         loadMapDeco();
+        drawSquares();
 		// ------------------------------
         
         // JUGADOR ---------------------  
+		    if ( anim.getCurrentSheet() == 0 )
+                idle();
+		    if( anim.getCurrentSheet() == 1 )
+		    	move();
 		    if( anim.getCurrentSheet() == 2 )
                 attack();
-		    else
-                idle();
 
             /*g.setColor( Color.red );
             jugador.updateBounds();
@@ -126,68 +158,73 @@ public class World extends JComponent implements  GameState{
 	}
 
     private class ListenKeys implements KeyListener{
-    	
+
       	@Override
         public void keyPressed( KeyEvent e ){
             //en cada Key Press solo debemos alterar la sheet que se reproducira
             //al presionar y no hacer el redibujado, de eso se carga el animator y el draw.
             // creo que el if mas interno es innecesario, pero da mas control
-            g = state.getGraphics();
-            if( e.getKeyCode() == KeyEvent.VK_LEFT ){
-                System.out.println("left");
-                jugador.setX( jugador.getX() - 4 ); 
-                if ( anim.getCurrentSheet() != 1 )
-                    anim.setCurrentSheet(1);
+            boolean up = e.getKeyCode() == KeyEvent.VK_UP;
+            boolean down = e.getKeyCode() == KeyEvent.VK_DOWN; 
+            boolean left = e.getKeyCode() == KeyEvent.VK_LEFT;
+            boolean right = e.getKeyCode() == KeyEvent.VK_RIGHT;
+            boolean attack = e.getKeyCode() == KeyEvent.VK_SPACE; 
+            if( left && up  ){
+                jugador.setY( jugador.getY() - jugador.getVelocity()  );
+                jugador.setX( jugador.getX() - jugador.getVelocity()  );
+                anim.setCurrentSheet(1);
             }
-            if( e.getKeyCode() == KeyEvent.VK_RIGHT ){
-                System.out.println("right");
-                jugador.setX( jugador.getX() + 4 );
-                if ( anim.getCurrentSheet() != 1 )
-                    anim.setCurrentSheet(1);
+            if( left && down ){
+                jugador.setY( jugador.getY() + jugador.getVelocity()  );
+                jugador.setX( jugador.getX() - jugador.getVelocity()  );
+                anim.setCurrentSheet(1);
             }
-            if( e.getKeyCode() == KeyEvent.VK_UP ){
-                System.out.println("up");
-                jugador.setY( jugador.getY() - 4 ); 
-                if ( anim.getCurrentSheet() != 1 )
-                    anim.setCurrentSheet(1);
+            if( right && up ){
+                jugador.setY( jugador.getY() + jugador.getVelocity()  );
+                jugador.setX( jugador.getX() + jugador.getVelocity()  );
+                anim.setCurrentSheet(1);
             }
-            if( e.getKeyCode() == KeyEvent.VK_DOWN ){
-                System.out.println("down");
-                jugador.setY( jugador.getY() + 4 );
-                if ( anim.getCurrentSheet() != 1 )
-                    anim.setCurrentSheet(1);
+            if( right && down ){
+                jugador.setY( jugador.getY() + jugador.getVelocity()  );
+                jugador.setX( jugador.getX() + jugador.getVelocity()  );
+                anim.setCurrentSheet(1);
             }
-            if( e.getKeyCode() == KeyEvent.VK_SPACE && anim.getCurrentSheet() != 1 && anim.getCurrentSheet() != 2 ){
+            if( left ){
+                jugador.setX( jugador.getX() - jugador.getVelocity() ); 
+                anim.setCurrentSheet(1);
+            }
+            if( right ){
+                jugador.setX( jugador.getX() + jugador.getVelocity()  );
+                anim.setCurrentSheet(1);
+            }
+            if( up ){
+                jugador.setY( jugador.getY() - jugador.getVelocity()  ); 
+                anim.setCurrentSheet(1);
+            }
+            if( down ){
+                jugador.setY( jugador.getY() + jugador.getVelocity()  );
+                anim.setCurrentSheet(1);
+            }
+            if( attack && anim.getCurrentSheet() != 1 && anim.getCurrentSheet() != 2 ){
                 anim.setPixels( 0 );
                 System.out.println("ATTACK");
-                anim.setCurrentSheet(2);
-                
+                anim.setCurrentSheet(2);           
            }
             if( e.getKeyCode() == KeyEvent.VK_E){
             	pause();
-            	
             }	
+            System.out.println( e.getKeyChar() + ": pressed");
             
         }//func
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-            if( e.getKeyCode() == KeyEvent.VK_LEFT ){
-                anim.setCurrentSheet(0);
-            }
-            if( e.getKeyCode() == KeyEvent.VK_RIGHT ){
-                anim.setCurrentSheet(0);
-            }
-            if( e.getKeyCode() == KeyEvent.VK_DOWN ){
-                anim.setCurrentSheet(0);
-            }
-            if( e.getKeyCode() == KeyEvent.VK_UP ){
-                anim.setCurrentSheet(0);
-            }
+				System.out.println(e.getKeyChar() + ": released");
+				anim.setCurrentSheet(0);
 		}
 
 		@Override
-		public void keyTyped(KeyEvent arg0) {
+		public void keyTyped(KeyEvent e) {
 			// TODO Auto-generated method stub
 			
 		}
