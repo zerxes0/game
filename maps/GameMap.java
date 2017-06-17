@@ -1,7 +1,7 @@
 package maps;
 
 import Data.GameObject;
-import systems.SpriteSheet;
+import Data.SpriteSheet;
 
 public class GameMap extends GameObject {
 

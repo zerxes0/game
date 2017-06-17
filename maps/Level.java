@@ -2,8 +2,8 @@ package maps;
 
 import java.awt.image.BufferedImage;
 
+import Data.SpriteSheet;
 import systems.ImageLoader;
-import systems.SpriteSheet;
 
 public class Level {
 
@@ -57,18 +57,15 @@ public class Level {
     }
 
     private static void initTiles(){
+    	int mult = 16;
         for( int i = 0; i < aux.length; i++ ){
             for( int j = 0; j < aux[i].length; j++ ){
             	if ( j%2 == 0 ){
-                    // TODO Cambiar 17 a 16
-                    // en J*17 el numero normal es 16, lo tengo
-                    // en 17 de momento para ver que tal se ve
-                    // con una rejilla 
-                    aux[i][j] = new Tile( tiles, (i*64)-32, (j*17)-48 );
-            		deco[i][j] = new Tile( null,(i*64)-32, (j*17)-48 );
+                    aux[i][j] = new Tile( tiles, (i*64)-32, (j*mult)-48 );
+            		deco[i][j] = new Tile( null, (i*64)-32, (j*mult)-48 );
             	}else{
-                    aux[i][j] = new Tile( tiles, i*64, (j*17)-48 );
-                    deco[i][j] = new Tile( null,(i*64), (j*17)-48 );
+                    aux[i][j] = new Tile( tiles, i*64, (j*mult)-48 );
+                    deco[i][j] = new Tile( null, i*64, (j*mult)-48 );
             	}
             }
         }
