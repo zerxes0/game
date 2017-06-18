@@ -12,7 +12,6 @@ public class Player extends Character {
     private Animator animator;
     private Collider collider;
     private int velocity = 3;
-   
     /*TODO
      * Atributos/funciones del sistema de combate.
      */
@@ -37,6 +36,25 @@ public class Player extends Character {
         setSheet( 1,"/Resources/Sprites/walk.png");
         setSheet( 2,"/Resources/Sprites/attack.png");
     }
+    
+    public void move( String axis ){
+        switch( axis ){
+            case "up":
+                 y -= velocity;
+                break;
+            case "left":
+                 x -= velocity;
+                break;
+            case "right":
+                 x += velocity;
+                break;
+            case "down":
+                 y += velocity;
+                break;
+            default:
+                break;
+        }
+    }
 
     public void setVelocity( int velocity ){ this.velocity = velocity; }
     public void setSheet( int i, String path ){ sheet[i] = new SpriteSheet( ImageLoader.loadImage(path) ); }
@@ -45,4 +63,6 @@ public class Player extends Character {
     public int getVelocity(){ return this.velocity; }
     public void updateBounds(){ collider.updateBound(x, y); }
     public Rectangle getBounds(){ return collider.getBounds(); }
+
+
 }
