@@ -18,15 +18,18 @@ public class World extends JComponent implements  GameState{
 
     //FIELDS -----------------
 	private GameStateManager state;
+    private ListenKeys lKey = new ListenKeys();
+    //--------------------------
+
+    //AUXILIAR FIELDS ----------
     private Player jugador;
     private GameMap lvl;
     private Tile[][] tiles;
     private Tile[][] deco;
     private Graphics g;
-    private ListenKeys lKey = new ListenKeys();
     private Animator anim;
     //--------------------------
-
+    
 	public World( GameStateManager newGameState ){
 		state = newGameState;
 		loadPlayer();
@@ -111,6 +114,14 @@ public class World extends JComponent implements  GameState{
         drawMap();     
         loadMapDeco();
         drawSquares();
+        /*DEBUGGING
+        g.setColor(Color.MAGENTA);
+        int x = 0;
+        int y = 0;
+        int subx = tiles[x][y].getX();
+        int suby = tiles[x][y].getY();
+        g.fillOval( subx, suby+32, 20, 20);   
+        System.out.println( "x:"+ subx + ", y: " + suby );*/
 		// ------------------------------
         
         // JUGADOR ---------------------  
@@ -121,10 +132,10 @@ public class World extends JComponent implements  GameState{
 		    if( anim.getCurrentSheet() == 2 )
                 attack();
 
-            /*g.setColor( Color.red );
+            g.setColor( Color.red );
             jugador.updateBounds();
             g.fillRect( (int)jugador.getBounds().getX(), (int)jugador.getBounds().getY(), (int)jugador.getBounds().getWidth(),
-                    (int)jugador.getBounds().getHeight() );*/
+                    (int)jugador.getBounds().getHeight() );
 		// ------------------------------		
 		//state.graphics().paint( state.getGraphics() );
 	}
@@ -156,9 +167,25 @@ public class World extends JComponent implements  GameState{
 	public void gameOver() {
 		System.out.println( "Nadie se puede morir fuera de batalla!" );
 	}
-
     private class ListenKeys implements KeyListener{
 
+        public void checkCollision(){
+            int x = (int) ( (jugador.gettBounds().getX() +64)/64);
+            int y = (int) ((jugador.gettBounds().getY() +64 )/16)-1;
+            int x1 = deco[x][y-1].getX();
+            int y1 = deco[x][y-1].getY();
+            y -= 1;
+            //x--;  
+            boolean col = deco[x][y-1].isSolid();
+            System.out.println( "next: "+ x+ "," + (y-1) );
+            System.out.println( "actual: " + x + "," + y );
+            /*System.out.println( "0: " +deco[0][0].getY());
+            System.out.println( "1: " + deco[0][1].getY());
+            System.out.println( "2: "+ deco[0][2].getY());
+            System.out.println( "3: "+deco[0][3].getY());
+            System.out.println( "4: "+deco[0][4].getY());*/
+        }
+    	
       	@Override
         public void keyPressed( KeyEvent e ){
             //en cada Key Press solo debemos alterar la sheet que se reproducira
@@ -169,40 +196,21 @@ public class World extends JComponent implements  GameState{
             boolean left = e.getKeyCode() == KeyEvent.VK_LEFT;
             boolean right = e.getKeyCode() == KeyEvent.VK_RIGHT;
             boolean attack = e.getKeyCode() == KeyEvent.VK_SPACE; 
-            if( left && up  ){
-                jugador.setY( jugador.getY() - jugador.getVelocity()  );
-                jugador.setX( jugador.getX() - jugador.getVelocity()  );
-                anim.setCurrentSheet(1);
-            }
-            if( left && down ){
-                jugador.setY( jugador.getY() + jugador.getVelocity()  );
-                jugador.setX( jugador.getX() - jugador.getVelocity()  );
-                anim.setCurrentSheet(1);
-            }
-            if( right && up ){
-                jugador.setY( jugador.getY() + jugador.getVelocity()  );
-                jugador.setX( jugador.getX() + jugador.getVelocity()  );
-                anim.setCurrentSheet(1);
-            }
-            if( right && down ){
-                jugador.setY( jugador.getY() + jugador.getVelocity()  );
-                jugador.setX( jugador.getX() + jugador.getVelocity()  );
-                anim.setCurrentSheet(1);
-            }
             if( left ){
-                jugador.setX( jugador.getX() - jugador.getVelocity() ); 
+                jugador.move("left");
                 anim.setCurrentSheet(1);
             }
             if( right ){
-                jugador.setX( jugador.getX() + jugador.getVelocity()  );
+                jugador.move("right");
                 anim.setCurrentSheet(1);
             }
-            if( up ){
-                jugador.setY( jugador.getY() - jugador.getVelocity()  ); 
+           
+            if( up && !col ){
+                jugador.move("up");
                 anim.setCurrentSheet(1);
             }
             if( down ){
-                jugador.setY( jugador.getY() + jugador.getVelocity()  );
+                jugador.move("down");
                 anim.setCurrentSheet(1);
             }
             if( attack && anim.getCurrentSheet() != 1 && anim.getCurrentSheet() != 2 ){
@@ -213,13 +221,11 @@ public class World extends JComponent implements  GameState{
             if( e.getKeyCode() == KeyEvent.VK_E){
             	pause();
             }	
-            System.out.println( e.getKeyChar() + ": pressed");
             
         }//func
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-				System.out.println(e.getKeyChar() + ": released");
 				anim.setCurrentSheet(0);
 		}
 

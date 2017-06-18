@@ -61,12 +61,12 @@ public class Level {
         for( int i = 0; i < aux.length; i++ ){
             for( int j = 0; j < aux[i].length; j++ ){
             	if ( j%2 == 0 ){
-                    aux[i][j] = new Tile( tiles, (i*64)-32, (j*mult)-48 );
-            		deco[i][j] = new Tile( null, (i*64)-32, (j*mult)-48 );
+                    aux[i][j] = new Tile( tiles, ((i*64)-32)*1, ((j*mult)-48)*1  );
+                    deco[i][j] = new Tile( null, (i*64)-32, (j*mult)-48, false );
             	}else{
-                    aux[i][j] = new Tile( tiles, i*64, (j*mult)-48 );
-                    deco[i][j] = new Tile( null, i*64, (j*mult)-48 );
-            	}
+            		aux[i][j] = new Tile( tiles, ( (i*64) )*1, ((j*mult)-48)*1 );
+            		deco[i][j] = new Tile( null, (i*64), (j*mult)-48, false );
+            	} 
             }
         }
     }//func
@@ -77,22 +77,30 @@ public class Level {
 
     private static void initDeco( int index ){
         deco = level[index].getDeco();
+        
         loadTileType( index, 7 , 8 ); //medio
-        setDeco( 4, 3 ); //medio
-        loadTileType( index, 9 , 8 );
+        setDeco( 4,3 ); //medio 
+        deco[4][3].setSolid(true);
+        
+        loadTileType( index, 9 , 8 ); //esquina derecha
         setDeco(5,2); //esquina derecha
-        loadTileType( index, 6, 8 ); //esquina inferior
-        setDeco( 5, 3 ); //esquina inferior
-        loadTileType( index, 3, 8 );
-        setDeco( 4, 4 );
-        loadTileType( index, 0, 8 );
-        setDeco( 4, 5 );
-        loadTileType( index, 2, 8 );
-        setDeco( 5, 4 );//medio inferior    
-        loadTileType( index, 2, 8 );
-        System.out.println( deco[3][3].getX() + "," + deco[3][3].getY() );
-
-       
+        deco[5][2].setSolid(true);
+        
+        loadTileType( index, 6, 8 ); //esquina inferior derecha
+        setDeco( 5, 3 ); //esquina inferior derecha
+        deco[5][3].setSolid(true);
+        
+        loadTileType( index, 3, 8 );//esquina superior izquierda
+        setDeco( 4, 4 );// esquina superior izquierda
+        deco[4][4].setSolid(true);
+        
+        loadTileType( index, 0, 8 ); //esquina inferior izquierda
+        setDeco( 4, 5 ); //esquina inferior izquierda
+        deco[4][5].setSolid(true);
+        
+        loadTileType( index, 2, 8 ); //medio inferior
+        setDeco( 5, 4 );//medio inferior   
+        deco[5][4].setSolid(true);
     }
 
     private static void level1( String path ){
