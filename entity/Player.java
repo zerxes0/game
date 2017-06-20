@@ -56,6 +56,20 @@ public class Player extends Character {
         }
     }
 
+    public boolean checkCollision( int colX, int colY ){
+            int x = (int) ( collider.getBounds().getX() );
+            int y = (int) ( collider.getBounds().getY() );
+            x /= 64; y /= 16;
+            x *= 64; y *= 16;
+            System.out.println( "j( " + (x) + ", " + (y) + " )" );
+            System.out.println();
+
+            if( x >= colX && y >= colY*(1.5) && x >= colX*(1.5) && y >= colY+16 )
+                return true;
+
+            return false;
+    }
+
     public void setVelocity( int velocity ){ this.velocity = velocity; }
     public void setSheet( int i, String path ){ sheet[i] = new SpriteSheet( ImageLoader.loadImage(path) ); }
 

@@ -28,6 +28,9 @@ public class World extends JComponent implements  GameState{
     private Tile[][] deco;
     private Graphics g;
     private Animator anim;
+    
+    private int px = 0;
+    private int py = 0;
     //--------------------------
     
 	public World( GameStateManager newGameState ){
@@ -39,7 +42,7 @@ public class World extends JComponent implements  GameState{
 	}
 	
 	private void loadPlayer(){
-		jugador = new Player("lol",100, 800/2,600/2, 20, 20, 10, 15);
+		jugador = new Player("lol",100, 1216/2,616/2, 20, 20, 10, 15);
 		anim = jugador.getAnimation();
 	}
 	
@@ -71,7 +74,6 @@ public class World extends JComponent implements  GameState{
 		    anim.setCurrentSheet(0);
     }
 
-
     private void loadMapDeco(){
         for( int i = 0; i < tiles.length; i++ ){
             for(int j = 0; j < tiles[i].length; j++ ){
@@ -91,16 +93,50 @@ public class World extends JComponent implements  GameState{
     private void drawSquares(){	
         g.setColor( Color.white );
         int x,y;
-        for( int i = 0; i < 14; i++ ){
-            for(int j = 0; j < 40 ; j++ ){
+        for( int i = 0; i <= 15; i++ ){
+            for(int j = 0; j <= 41 ; j++ ){
             	if ( j%2 != 0 ){ 
-            		x = i*64;
-            		y = ( j*16 )-32;
+            		x = (i*64)-32;
+            		y = ( j*16 )-16;
             		g.drawLine( x, y, x+64, y + 32 );
-            		g.drawLine( x, y,x-64, y + 32);
+            		g.drawLine( x, y,x+64, y-32);
             	}
             }//inner for
         }//for
+              
+    }
+
+    private void toIso(int x, int y){
+        //int j = ( x - 32)/64;
+        int j = 0;
+        int i = (y*2)/32;
+        if ( i%2 == 1 ){
+            j = ( x - 32 )/64;
+            px = j;
+            py = i;
+        }else{
+            j = ( x )/64;
+            px = j;
+            py = i;
+        }
+        px = (int) Math.floor( x/64 + y/32 )/2;
+        py = (int) Math.floor( x/64 - y/32)/2;
+    }
+    
+    private void debug(){
+        /*int row = (jugador.getX())/64;
+        int col = (jugador.getY() )/32;*/
+        int row = (jugador.getX());
+        int col = (jugador.getY());
+        toIso((row/64)*64,(col/16)*16);
+        System.out.println("jugador ( " + (row/64)*64 + ", " + (col/16)*16 + " )" + 
+        		"[ " + (row/64) + ", " + (col/16) + " ]" + "px,py( " + (px) + ", " + (py) + " )"); 
+        
+/*
+        g.setColor( Color.red );
+        jugador.updateBounds();
+        g.fillRect( (int)jugador.getBounds().getX(), (int)jugador.getBounds().getY(), (int)jugador.getBounds().getWidth(),
+                (int)jugador.getBounds().getHeight() );*/
     }
 
 	@Override
@@ -114,15 +150,11 @@ public class World extends JComponent implements  GameState{
         drawMap();     
         loadMapDeco();
         drawSquares();
-        /*DEBUGGING
-        g.setColor(Color.MAGENTA);
-        int x = 0;
-        int y = 0;
-        int subx = tiles[x][y].getX();
-        int suby = tiles[x][y].getY();
-        g.fillOval( subx, suby+32, 20, 20);   
-        System.out.println( "x:"+ subx + ", y: " + suby );*/
+        //debug();  
 		// ------------------------------
+        
+        g.setColor(Color.MAGENTA);
+        g.fillOval( (px*64), (py*16), 15, 15);
         
         // JUGADOR ---------------------  
 		    if ( anim.getCurrentSheet() == 0 )
@@ -131,11 +163,6 @@ public class World extends JComponent implements  GameState{
 		    	move();
 		    if( anim.getCurrentSheet() == 2 )
                 attack();
-
-            g.setColor( Color.red );
-            jugador.updateBounds();
-            g.fillRect( (int)jugador.getBounds().getX(), (int)jugador.getBounds().getY(), (int)jugador.getBounds().getWidth(),
-                    (int)jugador.getBounds().getHeight() );
 		// ------------------------------		
 		//state.graphics().paint( state.getGraphics() );
 	}
@@ -167,25 +194,23 @@ public class World extends JComponent implements  GameState{
 	public void gameOver() {
 		System.out.println( "Nadie se puede morir fuera de batalla!" );
 	}
+	
     private class ListenKeys implements KeyListener{
 
-        public void checkCollision(){
-            int x = (int) ( (jugador.gettBounds().getX() +64)/64);
-            int y = (int) ((jugador.gettBounds().getY() +64 )/16)-1;
-            int x1 = deco[x][y-1].getX();
-            int y1 = deco[x][y-1].getY();
-            y -= 1;
-            //x--;  
-            boolean col = deco[x][y-1].isSolid();
-            System.out.println( "next: "+ x+ "," + (y-1) );
-            System.out.println( "actual: " + x + "," + y );
-            /*System.out.println( "0: " +deco[0][0].getY());
-            System.out.println( "1: " + deco[0][1].getY());
-            System.out.println( "2: "+ deco[0][2].getY());
-            System.out.println( "3: "+deco[0][3].getY());
-            System.out.println( "4: "+deco[0][4].getY());*/
+        private boolean checkCollision( String axis ){
+            switch( axis ){
+                case "up":
+                    int row = (int) ( ( jugador.getX() )/ 64 );
+                    int col = (int) ( ( jugador.getY() )/ 16 );
+                    col -= 1;
+                    int x = deco[row][col].getX();
+                    int y = deco[row][col].getY(); 
+                    return jugador.checkCollision( x, y );
+                default:
+                    return false;
+            }
         }
-    	
+
       	@Override
         public void keyPressed( KeyEvent e ){
             //en cada Key Press solo debemos alterar la sheet que se reproducira
@@ -196,6 +221,7 @@ public class World extends JComponent implements  GameState{
             boolean left = e.getKeyCode() == KeyEvent.VK_LEFT;
             boolean right = e.getKeyCode() == KeyEvent.VK_RIGHT;
             boolean attack = e.getKeyCode() == KeyEvent.VK_SPACE; 
+
             if( left ){
                 jugador.move("left");
                 anim.setCurrentSheet(1);
@@ -204,8 +230,10 @@ public class World extends JComponent implements  GameState{
                 jugador.move("right");
                 anim.setCurrentSheet(1);
             }
-           
-            if( up && !col ){
+
+            //checkCollision("up");
+            debug();
+            if( up /*&& !checkCollision("up")*/ ){
                 jugador.move("up");
                 anim.setCurrentSheet(1);
             }

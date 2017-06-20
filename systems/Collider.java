@@ -22,7 +22,7 @@ public class Collider {
         //el cual se puede colisionar
         bounds.setBounds( x + offX , y + offY, widht, height);
     }
-
+    	
     public Rectangle getBounds(){ return bounds; }
 
 }
