@@ -105,15 +105,15 @@ public class Level {
         
         loadTileType32( index, 3, 17 );//esquina superior izquierda
         setDeco( 3, 5 );// esquina superior izquierda
-        deco[4][5].setSolid(true);
+        deco[3][5].setSolid(true);
         
         loadTileType32( index, 0, 17 ); //esquina inferior izquierda
         setDeco( 4, 6 ); //esquina inferior izquierda
-        deco[4][5].setSolid(true);
+        deco[4][6].setSolid(true);
         
         loadTileType32( index, 2, 17 ); //medio inferior
         setDeco( 4, 5 );//medio inferior   
-        deco[4][4].setSolid(true);
+        deco[4][5].setSolid(true);
     }
 
     private static void level1( String path ){

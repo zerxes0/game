@@ -29,8 +29,8 @@ public class World extends JComponent implements  GameState{
     private Graphics g;
     private Animator anim;
     
-    private int px = 0;
-    private int py = 0;
+    private int px;
+    private int py;
     //--------------------------
     
 	public World( GameStateManager newGameState ){
@@ -42,8 +42,10 @@ public class World extends JComponent implements  GameState{
 	}
 	
 	private void loadPlayer(){
-		jugador = new Player("lol",100, 1216/2,616/2, 20, 20, 10, 15);
+		jugador = new Player("lol",100, 192,192, 20, 20, 20,20 );
 		anim = jugador.getAnimation();
+        jugador.setOrigin( 48, 48 );
+		toIso( jugador.getOx(), jugador.getOy() );
 	}
 	
 	private void loadLevel(){
@@ -58,18 +60,18 @@ public class World extends JComponent implements  GameState{
         //aqui esta idle, idle en nuestro contexto
         //se usar para animacion default y walking
 		g.drawImage( anim.getSprites( 
-                anim.getCurrentSheet() ).crop( anim.state() , 0, 42, 42), jugador.getX() , jugador.getY(), null );
+                anim.getCurrentSheet() ).crop( anim.state() , 0, 64, 64), jugador.getX() , jugador.getY(), null );
     }
 
     private void move(){
         //aqui esta idle, idle en nuestro contexto
         //se usar para animacion default y walking
 		g.drawImage( anim.getSprites( 
-                anim.getCurrentSheet() ).crop( anim.state() , 0, 42, 42), jugador.getX() , jugador.getY(), null );
+                anim.getCurrentSheet() ).crop( anim.state() , 0, 64, 64), jugador.getX() , jugador.getY(), null );
     }
     
     private void attack(){
-		g.drawImage( anim.getSprites(2).crop( anim.state(), 0, 80, 80), jugador.getX(), jugador.getY()-38, null );
+		g.drawImage( anim.getSprites(2).crop( anim.state(), 0, 96, 96), jugador.getX(), jugador.getY()-38, null );
 		if( anim.state() >= 800 ) // el limite de la sprite sheet es 800 asi que al llegar se acabo el ataque
 		    anim.setCurrentSheet(0);
     }
@@ -106,37 +108,26 @@ public class World extends JComponent implements  GameState{
               
     }
 
-    private void toIso(int x, int y){
-        //int j = ( x - 32)/64;
-        int j = 0;
-        int i = (y*2)/32;
-        if ( i%2 == 1 ){
-            j = ( x - 32 )/64;
-            px = j;
-            py = i;
-        }else{
-            j = ( x )/64;
-            px = j;
-            py = i;
-        }
-        px = (int) Math.floor( x/64 + y/32 )/2;
-        py = (int) Math.floor( x/64 - y/32)/2;
-    }
+    private void toIso(int x, int y){       
+        int sx = x / 32;
+
+        int off = (sx % 2 == 1) ? 32 : 0;
+        int isoX = (2 * y) / 32;
+        int isoY = (x - off) / 64;     
+        px = isoY;
+        py = isoX;
+    } 
     
     private void debug(){
-        /*int row = (jugador.getX())/64;
-        int col = (jugador.getY() )/32;*/
-        int row = (jugador.getX());
-        int col = (jugador.getY());
-        toIso((row/64)*64,(col/16)*16);
-        System.out.println("jugador ( " + (row/64)*64 + ", " + (col/16)*16 + " )" + 
+        /*int row = (jugador.getOx())/64;
+        int col = (jugador.getOy() )/32;*/
+        int row = (int) ( jugador.getOx() );
+        int col = (int) ( jugador.getOy() );
+        toIso((row/64)*64, (col/16)*16	);
+        System.out.println("j:( " + jugador.getX() + ", " + jugador.getY() + " ) " );
+        System.out.println("jugador ( " + (row) + ", " + (col) + " )" + 
         		"[ " + (row/64) + ", " + (col/16) + " ]" + "px,py( " + (px) + ", " + (py) + " )"); 
         
-/*
-        g.setColor( Color.red );
-        jugador.updateBounds();
-        g.fillRect( (int)jugador.getBounds().getX(), (int)jugador.getBounds().getY(), (int)jugador.getBounds().getWidth(),
-                (int)jugador.getBounds().getHeight() );*/
     }
 
 	@Override
@@ -154,7 +145,12 @@ public class World extends JComponent implements  GameState{
 		// ------------------------------
         
         g.setColor(Color.MAGENTA);
-        g.fillOval( (px*64), (py*16), 15, 15);
+        g.fillOval( (jugador.getOx()/1)*1, (jugador.getOy()/1)*1, 15, 15);
+        
+        g.setColor( Color.red );
+        jugador.updateBounds();
+        g.fillRect( (int)jugador.getBounds().getX(), (int)jugador.getBounds().getY(), (int)jugador.getBounds().getWidth(),
+                (int)jugador.getBounds().getHeight() );
         
         // JUGADOR ---------------------  
 		    if ( anim.getCurrentSheet() == 0 )
@@ -200,12 +196,17 @@ public class World extends JComponent implements  GameState{
         private boolean checkCollision( String axis ){
             switch( axis ){
                 case "up":
-                    int row = (int) ( ( jugador.getX() )/ 64 );
-                    int col = (int) ( ( jugador.getY() )/ 16 );
-                    col -= 1;
-                    int x = deco[row][col].getX();
-                    int y = deco[row][col].getY(); 
-                    return jugador.checkCollision( x, y );
+                	try{
+                		if( deco[px][py-1].isSolid() ){
+                        int x = deco[px][py-1].getX();
+                        int y = deco[px][py-1].getY();
+                        System.out.println( " bounce " + x +", " + y );
+                        return jugador.checkCollision( x, y );
+                		}
+                    }catch( Exception e ){                        
+                        System.out.println( "out of bounce "+ "\n " + e.getCause());
+                    }
+                    
                 default:
                     return false;
             }
@@ -231,9 +232,9 @@ public class World extends JComponent implements  GameState{
                 anim.setCurrentSheet(1);
             }
 
-            //checkCollision("up");
+            checkCollision("up");
             debug();
-            if( up /*&& !checkCollision("up")*/ ){
+            if( up && !checkCollision("up") ){
                 jugador.move("up");
                 anim.setCurrentSheet(1);
             }

@@ -41,15 +41,19 @@ public class Player extends Character {
         switch( axis ){
             case "up":
                  y -= velocity;
+                 oy -= velocity;
                 break;
             case "left":
                  x -= velocity;
+                 ox -= velocity;
                 break;
             case "right":
                  x += velocity;
+                 ox += velocity;
                 break;
             case "down":
                  y += velocity;
+                 oy += velocity;
                 break;
             default:
                 break;
@@ -59,12 +63,28 @@ public class Player extends Character {
     public boolean checkCollision( int colX, int colY ){
             int x = (int) ( collider.getBounds().getX() );
             int y = (int) ( collider.getBounds().getY() );
+            int py0 = (int) (colY*1.5), px0 = colX;
+            int py1 = colY, px1 = (int) (colX*1.5);
+            int py2 = colY+16, px2 = (int) (colX*1.5);
+            int py3 = (int) (colY*1.5), px3 = colX+64;
             x /= 64; y /= 16;
             x *= 64; y *= 16;
             System.out.println( "j( " + (x) + ", " + (y) + " )" );
             System.out.println();
 
-            if( x >= colX && y >= colY*(1.5) && x >= colX*(1.5) && y >= colY+16 )
+            //PIXEL PERFECT COLLITIONS
+            boolean colFromBottom = ( x == px0 || y == py0 ) || ( x == px2 || y == py2 ) || ( x == px3 || y == py3 ) ;
+            boolean colFromLeft = ( x == px0 || y == py0 ) || ( x == px1 || y == py1 ) || ( x == px2 || y == py2 ) ;
+            boolean colFromRight = ( x == px2 || y == py2 ) || ( x == px1 || y == py1 ) || ( x == px2 || y == py2 ) ;
+            boolean colFromUp = ( x == px0 || y == py0 ) || ( x == px1 || y == py1 ) || ( x == px3 || y == py3 ) ;
+
+            if( colFromBottom )
+                return true;
+            else if( colFromLeft )
+                return true;
+            else if( colFromRight )
+                return true;
+            else if( colFromUp  )
                 return true;
 
             return false;
