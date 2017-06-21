@@ -2,15 +2,15 @@ package StateMachine;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.JComponent;
 
-import maps.Tile;
-import maps.Level;
-import maps.GameMap;
 import entity.Player;
+import maps.GameMap;
+import maps.Level;
+import maps.Tile;
 import systems.Animator;
 
 @SuppressWarnings("serial")
@@ -29,6 +29,9 @@ public class World extends JComponent implements  GameState{
     private Graphics g;
     private Animator anim;
     
+    private Point iso;
+    private Point pos;
+    private Point origin;
     private int px;
     private int py;
     //--------------------------
@@ -44,8 +47,11 @@ public class World extends JComponent implements  GameState{
 	private void loadPlayer(){
 		jugador = new Player("lol",100, 192,192, 20, 20, 20,20 );
 		anim = jugador.getAnimation();
+        pos = jugador.getPos();
         jugador.setOrigin( 48, 48 );
-		toIso( jugador.getOx(), jugador.getOy() );
+        origin = jugador.getOrigin();
+        iso = new Point(  origin.x ,  origin.y );
+		toIso( origin.x, origin.y );
 	}
 	
 	private void loadLevel(){
@@ -60,18 +66,18 @@ public class World extends JComponent implements  GameState{
         //aqui esta idle, idle en nuestro contexto
         //se usar para animacion default y walking
 		g.drawImage( anim.getSprites( 
-                anim.getCurrentSheet() ).crop( anim.state() , 0, 64, 64), jugador.getX() , jugador.getY(), null );
+                anim.getCurrentSheet() ).crop( anim.state() , 0, 64, 64), pos.x , pos.y, null );
     }
 
     private void move(){
         //aqui esta idle, idle en nuestro contexto
         //se usar para animacion default y walking
 		g.drawImage( anim.getSprites( 
-                anim.getCurrentSheet() ).crop( anim.state() , 0, 64, 64), jugador.getX() , jugador.getY(), null );
+                anim.getCurrentSheet() ).crop( anim.state() , 0, 64, 64), pos.x , pos.y, null );
     }
     
     private void attack(){
-		g.drawImage( anim.getSprites(2).crop( anim.state(), 0, 96, 96), jugador.getX(), jugador.getY()-38, null );
+		g.drawImage( anim.getSprites(2).crop( anim.state(), 0, 96, 96), pos.x, pos.y-38, null );
 		if( anim.state() >= 800 ) // el limite de la sprite sheet es 800 asi que al llegar se acabo el ataque
 		    anim.setCurrentSheet(0);
     }
@@ -114,19 +120,21 @@ public class World extends JComponent implements  GameState{
         int off = (sx % 2 == 1) ? 32 : 0;
         int isoX = (2 * y) / 32;
         int isoY = (x - off) / 64;     
-        px = isoY;
-        py = isoX;
+
+        iso.setLocation( isoX, isoY );
+        /*(px = isoY;
+        py = isoX; */
     } 
     
     private void debug(){
-        /*int row = (jugador.getOx())/64;
-        int col = (jugador.getOy() )/32;*/
-        int row = (int) ( jugador.getOx() );
-        int col = (int) ( jugador.getOy() );
+        /*int row = (origin.getX())/64;
+        int col = (origin.getY() )/32;*/
+        int row = (int) ( origin.getX() );
+        int col = (int) ( origin.getY() );
         toIso((row/64)*64, (col/16)*16	);
-        System.out.println("j:( " + jugador.getX() + ", " + jugador.getY() + " ) " );
+        System.out.println("j:( " + pos.x + ", " + pos.y + " ) " );
         System.out.println("jugador ( " + (row) + ", " + (col) + " )" + 
-        		"[ " + (row/64) + ", " + (col/16) + " ]" + "px,py( " + (px) + ", " + (py) + " )"); 
+        		"[ " + (row/64) + ", " + (col/16) + " ]" + "px,py( " + (origin.x) + ", " + (origin.y) + " )"); 
         
     }
 
@@ -145,7 +153,7 @@ public class World extends JComponent implements  GameState{
 		// ------------------------------
         
         g.setColor(Color.MAGENTA);
-        g.fillOval( (jugador.getOx()/1)*1, (jugador.getOy()/1)*1, 15, 15);
+        g.fillOval( ((int)origin.getX()/1)*1, ((int)origin.getY()/1)*1, 15, 15);
         
         g.setColor( Color.red );
         jugador.updateBounds();

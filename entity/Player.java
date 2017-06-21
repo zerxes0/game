@@ -40,20 +40,20 @@ public class Player extends Character {
     public void move( String axis ){
         switch( axis ){
             case "up":
-                 y -= velocity;
-                 oy -= velocity;
+                 pos.y -= velocity;
+                 origin.y -= velocity;
                 break;
             case "left":
-                 x -= velocity;
-                 ox -= velocity;
+                 pos.x -= velocity;
+                 origin.x -= velocity;
                 break;
             case "right":
-                 x += velocity;
-                 ox += velocity;
+                 pos.x += velocity;
+                 origin.x += velocity;
                 break;
             case "down":
-                 y += velocity;
-                 oy += velocity;
+                 pos.y += velocity;
+                 origin.y += velocity;
                 break;
             default:
                 break;
@@ -89,13 +89,14 @@ public class Player extends Character {
 
             return false;
     }
-
+    
+    public void updateBounds(){ collider.updateBound(pos.x, pos.y); }
+    
     public void setVelocity( int velocity ){ this.velocity = velocity; }
     public void setSheet( int i, String path ){ sheet[i] = new SpriteSheet( ImageLoader.loadImage(path) ); }
 
     public Animator getAnimation(){ return animator; }
     public int getVelocity(){ return this.velocity; }
-    public void updateBounds(){ collider.updateBound(x, y); }
     public Rectangle getBounds(){ return collider.getBounds(); }
 
 
