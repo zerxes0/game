@@ -32,8 +32,6 @@ public class World extends JComponent implements  GameState{
     private Point iso;
     private Point pos;
     private Point origin;
-    private int px;
-    private int py;
     //--------------------------
     
 	public World( GameStateManager newGameState ){
@@ -85,7 +83,7 @@ public class World extends JComponent implements  GameState{
     private void loadMapDeco(){
         for( int i = 0; i < tiles.length; i++ ){
             for(int j = 0; j < tiles[i].length; j++ ){
-                g.drawImage( deco[i][j].getSprite(), deco[i][j].getX(), deco[i][j].getY(), null );
+                g.drawImage( deco[i][j].getSprite(), deco[i][j].getPos().x, deco[i][j].getPos().y, null );
             }//inner for
         }//for
     }
@@ -93,7 +91,7 @@ public class World extends JComponent implements  GameState{
     private void drawMap(){
         for( int i = 0; i < tiles.length; i++ ){
             for(int j = 0; j < tiles[i].length; j++ ){
-                g.drawImage( tiles[i][j].getSprite(), tiles[i][j].getX(), tiles[i][j].getY(), null );
+                g.drawImage( tiles[i][j].getSprite(), tiles[i][j].getPos().x, tiles[i][j].getPos().y, null );
             }//inner for
         }//for
     }//func
@@ -121,9 +119,7 @@ public class World extends JComponent implements  GameState{
         int isoX = (2 * y) / 32;
         int isoY = (x - off) / 64;     
 
-        iso.setLocation( isoX, isoY );
-        /*(px = isoY;
-        py = isoX; */
+        iso.setLocation( isoY, isoX );
     } 
     
     private void debug(){
@@ -134,7 +130,7 @@ public class World extends JComponent implements  GameState{
         toIso((row/64)*64, (col/16)*16	);
         System.out.println("j:( " + pos.x + ", " + pos.y + " ) " );
         System.out.println("jugador ( " + (row) + ", " + (col) + " )" + 
-        		"[ " + (row/64) + ", " + (col/16) + " ]" + "px,py( " + (origin.x) + ", " + (origin.y) + " )"); 
+        		"[ " + (row/64) + ", " + (col/16) + " ]" + "iso x,y( " + (iso.x) + ", " + (iso.y) + " )"); 
         
     }
 
@@ -153,7 +149,7 @@ public class World extends JComponent implements  GameState{
 		// ------------------------------
         
         g.setColor(Color.MAGENTA);
-        g.fillOval( ((int)origin.getX()/1)*1, ((int)origin.getY()/1)*1, 15, 15);
+        g.fillOval( (origin.x/1)*1, (origin.y/1)*1, 15, 15);
         
         g.setColor( Color.red );
         jugador.updateBounds();
@@ -205,9 +201,9 @@ public class World extends JComponent implements  GameState{
             switch( axis ){
                 case "up":
                 	try{
-                		if( deco[px][py-1].isSolid() ){
-                        int x = deco[px][py-1].getX();
-                        int y = deco[px][py-1].getY();
+                		if( deco[iso.x][iso.y-1].isSolid() ){
+                        int x = deco[iso.x][iso.y-1].getPos().x;
+                        int y = deco[iso.x][iso.y-1].getPos().y;
                         System.out.println( " bounce " + x +", " + y );
                         return jugador.checkCollision( x, y );
                 		}
