@@ -22,7 +22,7 @@ public class Game{
 	
     public Game( Dimension dimension ){ 
     	window = new GameFrame();
-    	window.init(932,626);
+    	window.init( (int) dimension.getWidth(), (int) dimension.getHeight() );
     	gameStateMachine = new GameStateManager( dimension );
     	KeyListener[] l = gameStateMachine.getComponent().getKeyListeners();
     	window.getCanvas().addKeyListener( l[0]);
