@@ -3,53 +3,54 @@ package StateMachine;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import javax.swing.JComponent;
 
+import Data.CurrentData;
 import entity.Player;
 import maps.GameMap;
 import maps.Level;
 import maps.Tile;
 import systems.Animator;
+import systems.ListenKeys;
 
 @SuppressWarnings("serial")
 public class World extends JComponent implements  GameState{
 
     //FIELDS -----------------
 	private GameStateManager state;
-    private ListenKeys lKey = new ListenKeys();
+    private ListenKeys lKey;
     //--------------------------
 
     //AUXILIAR FIELDS ----------
     private Player jugador;
     private GameMap lvl;
-    private Tile[][] tiles;
-    private Tile[][] deco;
+    private Tile[][] tiles, deco;
     private Graphics g;
     private Animator anim;
     
-    private Point iso;
-    private Point pos;
-    private Point origin;
+    private Point iso, pos, origin, aux;
     //--------------------------
     
 	public World( GameStateManager newGameState ){
 		state = newGameState;
 		loadPlayer();
-		loadLevel();   
+		loadLevel();
+		setData();
+		lKey = new ListenKeys();
         this.setFocusable(true);     
-        this.addKeyListener( lKey );        
+        this.addKeyListener( lKey ); 
+        
 	}
 	
 	private void loadPlayer(){
 		jugador = new Player("lol",100, 192,192, 20, 20, 20,20 );
 		anim = jugador.getAnimation();
         pos = jugador.getPos();
-        jugador.setOrigin( 48, 48 );
+        jugador.setOrigin( 32, 32 );
         origin = jugador.getOrigin();
         iso = new Point(  origin.x ,  origin.y );
-		toIso( origin.x, origin.y );
+        aux = new Point();
+		toIso();
 	}
 	
 	private void loadLevel(){
@@ -58,20 +59,17 @@ public class World extends JComponent implements  GameState{
         tiles = lvl.getTiles();
         deco = lvl.getDeco();
 	}
-	public KeyListener getListen(){ return lKey; }
     
     private void idle(){
         //aqui esta idle, idle en nuestro contexto
         //se usar para animacion default y walking
-		g.drawImage( anim.getSprites( 
-                anim.getCurrentSheet() ).crop( anim.state() , 0, 64, 64), pos.x , pos.y, null );
+		g.drawImage( anim.getSprites( anim.getCurrentSheet() ).crop( anim.state() , 0, 64, 64), pos.x , pos.y, null );
     }
 
     private void move(){
         //aqui esta idle, idle en nuestro contexto
         //se usar para animacion default y walking
-		g.drawImage( anim.getSprites( 
-                anim.getCurrentSheet() ).crop( anim.state() , 0, 64, 64), pos.x , pos.y, null );
+		g.drawImage( anim.getSprites( anim.getCurrentSheet() ).crop( anim.state() , 0, 64, 64), pos.x , pos.y, null );
     }
     
     private void attack(){
@@ -80,18 +78,11 @@ public class World extends JComponent implements  GameState{
 		    anim.setCurrentSheet(0);
     }
 
-    private void loadMapDeco(){
-        for( int i = 0; i < tiles.length; i++ ){
-            for(int j = 0; j < tiles[i].length; j++ ){
-                g.drawImage( deco[i][j].getSprite(), deco[i][j].getPos().x, deco[i][j].getPos().y, null );
-            }//inner for
-        }//for
-    }
-
     private void drawMap(){
         for( int i = 0; i < tiles.length; i++ ){
             for(int j = 0; j < tiles[i].length; j++ ){
                 g.drawImage( tiles[i][j].getSprite(), tiles[i][j].getPos().x, tiles[i][j].getPos().y, null );
+                g.drawImage( deco[i][j].getSprite(), deco[i][j].getPos().x, deco[i][j].getPos().y, null );
             }//inner for
         }//for
     }//func
@@ -108,54 +99,61 @@ public class World extends JComponent implements  GameState{
             		g.drawLine( x, y,x+64, y-32);
             	}
             }//inner for
-        }//for
-              
-    }
+        }//for             
+    } //func
 
-    private void toIso(int x, int y){       
+    private void toIso(){
+        int x = (int) ( origin.getX()/64 )*64;
+        int y = (int) ( origin.getY()/16 )*16;
         int sx = x / 32;
 
         int off = (sx % 2 == 1) ? 32 : 0;
-        int isoX = (2 * y) / 32;
-        int isoY = (x - off) / 64;     
+        int isoX = (x - off) / 64;
+        int isoY = (2 * y) / 32;     
 
-        iso.setLocation( isoY, isoX );
+        iso.setLocation( isoX, isoY );
     } 
     
     private void debug(){
-        /*int row = (origin.getX())/64;
-        int col = (origin.getY() )/32;*/
         int row = (int) ( origin.getX() );
         int col = (int) ( origin.getY() );
-        toIso((row/64)*64, (col/16)*16	);
+        toIso();
         System.out.println("j:( " + pos.x + ", " + pos.y + " ) " );
         System.out.println("jugador ( " + (row) + ", " + (col) + " )" + 
         		"[ " + (row/64) + ", " + (col/16) + " ]" + "iso x,y( " + (iso.x) + ", " + (iso.y) + " )"); 
         
+        int x = deco[3][6].getPos().x;
+        int y = deco[3][6].getPos().y;
+        
+        g.setColor(Color.MAGENTA);
+        g.fillOval( (origin.x), (origin.y), 15, 15);
+        g.drawRect(pos.x, pos.y, 64, 64);     
+        
+        g.drawRect(x,y,64,32);     
+        g.drawLine(x , y+16, x+32, y); //p0p1
+        g.drawLine( x + 64, y + 16, x+32  , y); // p1p3 
+        g.drawLine( x, y+16, x+32, y + 32); // p0p2
+        g.drawLine( x + 64, y+16, x+32, y + 32); // p0p2
+        
+        g.setColor( Color.red );
+        g.drawRect(origin.x, origin.y, 64-48, 64-48);
+        
+        g.fillRect( (int)jugador.getBounds().getX(), (int)jugador.getBounds().getY(), (int)jugador.getBounds().getWidth(),
+                (int)jugador.getBounds().getHeight() );
+        
+        jugador.setOrigin( 24, 40 );       
     }
-
-	@Override
-	public void draw(){
+	
+	@Override public void draw(){
         //System.out.println( "World draw" );
 		g = state.getGraphics();
 
         //ESCENARIO ---------------------
-        //g.setColor( Color.green );
-		//g.fillRect( 0, 0, (int)GameGraphics.dimension.getWidth(), (int)GameGraphics.dimension.getHeight() );
-        drawMap();     
-        loadMapDeco();
+		drawMap();     
         drawSquares();
-        //debug();  
+		//debug();
 		// ------------------------------
-        
-        g.setColor(Color.MAGENTA);
-        g.fillOval( (origin.x/1)*1, (origin.y/1)*1, 15, 15);
-        
-        g.setColor( Color.red );
-        jugador.updateBounds();
-        g.fillRect( (int)jugador.getBounds().getX(), (int)jugador.getBounds().getY(), (int)jugador.getBounds().getWidth(),
-                (int)jugador.getBounds().getHeight() );
-        
+                     
         // JUGADOR ---------------------  
 		    if ( anim.getCurrentSheet() == 0 )
                 idle();
@@ -164,108 +162,38 @@ public class World extends JComponent implements  GameState{
 		    if( anim.getCurrentSheet() == 2 )
                 attack();
 		// ------------------------------		
-		//state.graphics().paint( state.getGraphics() );
 	}
 	
-	@Override
-	public void menu() {
+	@Override public void menu() {
         System.out.println( "Regresando al menu..." );
 	    state.setGameState( state.getMenu() );	
 	}
 
-	@Override
-	public void world() {
-        System.out.println( "Ya estabas en WORLD STATE!" );
-	}
-
-	@Override
-	public void battle() {
+    @Override public void battle() {
         System.out.println( "Entrando a batalla " );
+        state.getBattle().battle();
 	    state.setGameState( state.getMenu() );	
 	}
 
-	@Override
-	public void pause() {
+	@Override public void pause() {
 		System.out.println( "Pausa " );
 	    state.setGameState( state.getPause() );	
 	}
 
-	@Override
-	public void gameOver() {
-		System.out.println( "Nadie se puede morir fuera de batalla!" );
-	}
+	@Override public void gameOver() { System.out.println( "Nadie se puede morir fuera de batalla!" ); }
+	@Override public void world() { System.out.println( "Ya estabas en WORLD state" ); }
 	
-    private class ListenKeys implements KeyListener{
-
-        private boolean checkCollision( String axis ){
-            switch( axis ){
-                case "up":
-                	try{
-                		if( deco[iso.x][iso.y-1].isSolid() ){
-                        int x = deco[iso.x][iso.y-1].getPos().x;
-                        int y = deco[iso.x][iso.y-1].getPos().y;
-                        System.out.println( " bounce " + x +", " + y );
-                        return jugador.checkCollision( x, y );
-                		}
-                    }catch( Exception e ){                        
-                        System.out.println( "out of bounce "+ "\n " + e.getCause());
-                    }
-                    
-                default:
-                    return false;
-            }
-        }
-
-      	@Override
-        public void keyPressed( KeyEvent e ){
-            //en cada Key Press solo debemos alterar la sheet que se reproducira
-            //al presionar y no hacer el redibujado, de eso se carga el animator y el draw.
-            // creo que el if mas interno es innecesario, pero da mas control
-            boolean up = e.getKeyCode() == KeyEvent.VK_UP;
-            boolean down = e.getKeyCode() == KeyEvent.VK_DOWN; 
-            boolean left = e.getKeyCode() == KeyEvent.VK_LEFT;
-            boolean right = e.getKeyCode() == KeyEvent.VK_RIGHT;
-            boolean attack = e.getKeyCode() == KeyEvent.VK_SPACE; 
-
-            if( left ){
-                jugador.move("left");
-                anim.setCurrentSheet(1);
-            }
-            if( right ){
-                jugador.move("right");
-                anim.setCurrentSheet(1);
-            }
-
-            checkCollision("up");
-            debug();
-            if( up && !checkCollision("up") ){
-                jugador.move("up");
-                anim.setCurrentSheet(1);
-            }
-            if( down ){
-                jugador.move("down");
-                anim.setCurrentSheet(1);
-            }
-            if( attack && anim.getCurrentSheet() != 1 && anim.getCurrentSheet() != 2 ){
-                anim.setPixels( 0 );
-                System.out.println("ATTACK");
-                anim.setCurrentSheet(2);           
-           }
-            if( e.getKeyCode() == KeyEvent.VK_E){
-            	pause();
-            }	
-            
-        }//func
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-				anim.setCurrentSheet(0);
-		}
-
-		@Override
-		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-    }//class
+	private void setData(){
+        CurrentData.jugador = jugador;
+        CurrentData.lvl = lvl;
+        CurrentData.tiles = tiles;
+        CurrentData.deco = deco;
+        CurrentData.anim = anim;
+        CurrentData.pos = pos;
+        CurrentData.iso = iso;
+        CurrentData.aux = aux;
+        CurrentData.origin = origin;
+        CurrentData.lKey = lKey;
+        CurrentData.state = state;
+	}	
 }

@@ -3,7 +3,7 @@ package StateMachine;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import GUI.GameGraphics;
+import Data.CurrentData;
 
 public class Menu implements GameState {
 
@@ -19,7 +19,6 @@ public class Menu implements GameState {
 		System.out.println("reach menu draw");
         g = state.getGraphics();
 		g.setColor( Color.blue );
-		g.fillRect(0, 0, (int)GameGraphics.dimension.getWidth(), (int)GameGraphics.dimension.getHeight() );
 		//state.getGraphics().paint(state.getGraphics());
 	}
 	

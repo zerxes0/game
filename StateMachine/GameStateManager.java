@@ -4,7 +4,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
-import GUI.GameGraphics;
+import Data.CurrentData;
 
 public class GameStateManager {
 	//FIELDS ---------------	
@@ -14,14 +14,12 @@ public class GameStateManager {
 	private GameState pause;
 	private GameState gameOver;
 	private GameState currentState;
-    public GameGraphics graphics;
+    public CurrentData graphics;
     
     public Graphics g;
     //---------------------
 	
-	public GameStateManager( Dimension dimension ){	
-        graphics = new GameGraphics( dimension );
-        
+	public GameStateManager( Dimension dimension ){	      
 		menu = new Menu(this);
 		world = new World(this);
 		battle = new Battle(this);
@@ -51,9 +49,10 @@ public class GameStateManager {
     public GameState getBattle(){ return battle; }
     public GameState getPause(){ return pause; }
     public GameState getGameOver(){ return gameOver; }
-    public GameGraphics graphics(){ return graphics; }
+    public CurrentData graphics(){ return graphics; }
     public Component getComponent(){ return (Component)world; }
     public Graphics getGraphics(){ return this.g; }
+    public GameState getCurrentState(){ return currentState; }
     //----------------------
 
 }

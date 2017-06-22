@@ -1,23 +1,122 @@
 package StateMachine;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 
-import GUI.GameGraphics;
+import javax.swing.JComponent;
 
-public class Battle implements GameState {
+import Data.CurrentData;
+import systems.ListenKeys;
+import entity.Player;
+import maps.Tile;
+import systems.Animator;
 
-	GameStateManager state;
-    GameGraphics graphics;
+@SuppressWarnings("serial")
+public class Battle extends JComponent implements GameState {
+
+    //FIELDS -----------------
+	private GameStateManager state;
+    private ListenKeys lKey;
+    private boolean inBattle = false;
+    //--------------------------
 	
+    //AUXILIAR FIELDS ----------
+    private Player jugador;
+    private Tile[][] tiles, deco;
+    private Graphics g;
+    private Animator anim;
+    
+    private Point iso, pos, aux, origin;
+    //--------------------------
+    //
 	public Battle( GameStateManager newGameState ){
 		state = newGameState;
+        this.setFocusable(true);     
+        this.addKeyListener( lKey ); 
 	}
 	
+    private void idle(){
+        //aqui esta idle, idle en nuestro contexto
+        //se usar para animacion default y walking
+		g.drawImage( anim.getSprites( anim.getCurrentSheet() ).crop( anim.state() , 0, 64, 64), pos.x , pos.y, null );
+    }
+
+    private void move(){
+        //aqui esta idle, idle en nuestro contexto
+        //se usar para animacion default y walking
+		g.drawImage( anim.getSprites( anim.getCurrentSheet() ).crop( anim.state() , 0, 64, 64), pos.x , pos.y, null );
+    }
+    
+    private void attack(){
+		g.drawImage( anim.getSprites(2).crop( anim.state(), 0, 96, 96), pos.x, pos.y-38, null );
+		if( anim.state() >= 800 ) // el limite de la sprite sheet es 800 asi que al llegar se acabo el ataque
+		    anim.setCurrentSheet(0);
+    }
+
+    private void drawMap(){
+        for( int i = 0; i < tiles.length; i++ ){
+            for(int j = 0; j < tiles[i].length; j++ ){
+                g.drawImage( tiles[i][j].getSprite(), tiles[i][j].getPos().x, tiles[i][j].getPos().y, null );
+                g.drawImage( deco[i][j].getSprite(), deco[i][j].getPos().x, deco[i][j].getPos().y, null );
+            }//inner for
+        }//for
+    }//func
+
+    private void drawSquares(){	
+        g.setColor( Color.white );
+        int x,y;
+        for( int i = 0; i <= 15; i++ ){
+            for(int j = 0; j <= 41 ; j++ ){
+            	if ( j%2 != 0 ){ 
+            		x = (i*64)-32;
+            		y = ( j*16 )-16;
+            		g.drawLine( x, y, x+64, y + 32 );
+            		g.drawLine( x, y,x+64, y-32);
+            	}
+            }//inner for
+        }//for
+              
+    }
+
+    private void toIso(){
+        int x = (int) ( origin.getX()/64 )*64;
+        int y = (int) ( origin.getY()/16 )*16;
+        int sx = x / 32;
+
+        int off = (sx % 2 == 1) ? 32 : 0;
+        int isoX = (x - off) / 64;
+        int isoY = (2 * y) / 32;     
+
+        iso.setLocation( isoX, isoY );
+    }
+    
 	@Override
 	public void draw(){
-        System.out.println( "Battle draw" );
-        state.getGraphics().setColor( Color.blue );
-		state.getGraphics().fillRect(0, 0, (int)GameGraphics.dimension.getWidth(), (int)GameGraphics.dimension.getHeight() );
+		if( inBattle == false ){
+			battle();
+			inBattle = true;
+			g.dispose();
+		}
+        //System.out.println( "Battle draw" );
+		g = state.getGraphics();		
+		
+        //ESCENARIO ---------------------
+		drawMap();     
+        drawSquares();
+		//debug();
+		
+		// ------------------------------
+        
+        // JUGADOR ---------------------  
+		    if ( anim.getCurrentSheet() == 0 )
+                idle();
+		    if( anim.getCurrentSheet() == 1 )
+		    	move();
+		    if( anim.getCurrentSheet() == 2 )
+                attack();
+		// ------------------------------		
+		    
 	}
 	
 	@Override
@@ -34,7 +133,14 @@ public class Battle implements GameState {
 
 	@Override
 	public void battle() {
-        System.out.println( "Ya esta en batalla." );
+        jugador = CurrentData.jugador;
+        tiles = CurrentData.tiles;
+        deco = CurrentData.deco;
+        anim = CurrentData.anim;
+        pos = CurrentData.pos;
+        iso = CurrentData.iso;
+        aux = CurrentData.aux;
+        //lKey = CurrentData.lKey;
 	}
 
 	@Override

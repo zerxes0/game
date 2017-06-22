@@ -1,11 +1,11 @@
 package StateMachine;
 
-import GUI.GameGraphics;
+import Data.CurrentData;
 
 public class Pause implements GameState{
 
 	GameStateManager state;
-    GameGraphics graphics;
+    CurrentData graphics;
 	
 	public Pause( GameStateManager newGameState ){
 		state = newGameState;
