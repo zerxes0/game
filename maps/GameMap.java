@@ -6,8 +6,8 @@ import Data.SpriteSheet;
 public class GameMap extends GameObject {
 
     private SpriteSheet sheet;
-    private Tile[][] tiles = new Tile[38][14];
-    private Tile[][] deco = new Tile[38][14];
+    private Tile[][] tiles = new Tile[14][38];
+    private Tile[][] deco = new Tile[14][38];
 
     public GameMap( SpriteSheet sheet, int widht, int height ){
         super( widht, height );

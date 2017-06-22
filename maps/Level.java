@@ -28,7 +28,7 @@ public class Level {
         }//switch
     }//func
 
-    private static void loadTileType( int index, int x, int y ){
+    /*private static void loadTileType( int index, int x, int y ){
         //ESTA FUNCION ES LA QUE CARGA LOS SPRITES( tiles )
         //recibimos un index, el index se refiere al nivel que vamos a editar
         // la x y la y hacen referencia a la posicion del frame(sprite)
@@ -38,7 +38,7 @@ public class Level {
         // por ejemplo el segundo sprite en nuestra sprite sheet, seria el (0,1)
         // ( 0, 1 ) = ( 0,64) -> la posicion en pixeles de nuestro sprite
         tiles = tile( index, x*64, y*64, 64, 64 ) ;
-    }
+    }*/
     
     private static void loadTileType32( int index, int x, int y ){
     	//ya que algunos de los sprites en la spritesheet son realmente 64x32 creamos un metodo alternativo
@@ -65,13 +65,14 @@ public class Level {
     	//int mult = 16;
     	int offx;
         for( int i = 0; i < aux.length; i++ ){
-        	 if( i%2 == 1)
+
+            for( int j = 0; j< aux[i].length; j++ ){ 
+           	 if( j%2 == 1)
         		 offx = 64 / 2;
         	 else
         		 offx = 0;
-            for( int j = 0; j< aux[i].length; j++ ){ 
-            	aux[i][j] = new Tile( tiles,(j * 64) + offx, i * 32 / 2 ); 
-            	deco[i][j] = new Tile( null,(j * 64) + offx, i * 32 / 2 ); 
+            	aux[i][j] = new Tile( tiles, (i * 64) + offx , (j*32)/2 ); 
+            	deco[i][j] = new Tile( null, (i * 64) + offx , (j*32)/2  ); 
             	/*if ( j%2 == 0 ){
                     aux[i][j] = new Tile( tiles, ((i*64))*1, ((j*mult))*1  );
                     deco[i][j] = new Tile( null, (i*64)*1, (j*mult)*1, false );
@@ -85,7 +86,7 @@ public class Level {
     }//func
 
     private static void setDeco( int x, int y){
-        deco[y][x].setSprite(tiles);
+        deco[x][y].setSprite(tiles);
     }
 
     private static void initDeco( int index ){
