@@ -22,7 +22,7 @@ public abstract class GameObject{
     public void setOrigin( int widht, int height ){
         //Esta funcion es para objetos tipo humanoides convierte el centro del sprite
         //en donde estan los pies, lo hace con autocalculos.
-        this.origin.setLocation( pos.getX() + widht/2 , pos.getY() + height );
+        this.origin.setLocation( pos.getX() + widht , pos.getY() + height );
     }
 
     public Point getPos(){ return this.pos; }
