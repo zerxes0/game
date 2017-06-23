@@ -41,8 +41,9 @@ public class Game{
     	catch(Exception e){
     		e.printStackTrace();
     	}
-    	Time.start();    	
-        gameStateMachine.world();
+    	Time.start();    
+        
+        //gameStateMachine.world();    
         start();
     }
     

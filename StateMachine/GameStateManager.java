@@ -14,7 +14,7 @@ public class GameStateManager {
 	private GameState pause;
 	private GameState gameOver;
 	private GameState currentState;
-    public CurrentData graphics;
+        public CurrentData graphics;
     
     public Graphics g;
     //---------------------

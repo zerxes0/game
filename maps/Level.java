@@ -28,7 +28,7 @@ public class Level {
         }//switch
     }//func
 
-    /*private static void loadTileType( int index, int x, int y ){
+    private static void loadTileType( int index, int x, int y ){
         //ESTA FUNCION ES LA QUE CARGA LOS SPRITES( tiles )
         //recibimos un index, el index se refiere al nivel que vamos a editar
         // la x y la y hacen referencia a la posicion del frame(sprite)
@@ -38,7 +38,7 @@ public class Level {
         // por ejemplo el segundo sprite en nuestra sprite sheet, seria el (0,1)
         // ( 0, 1 ) = ( 0,64) -> la posicion en pixeles de nuestro sprite
         tiles = tile( index, x*64, y*64, 64, 64 ) ;
-    }*/
+    }
     
     private static void loadTileType32( int index, int x, int y ){
     	//ya que algunos de los sprites en la spritesheet son realmente 64x32 creamos un metodo alternativo
@@ -65,7 +65,6 @@ public class Level {
     	//int mult = 16;
     	int offx;
         for( int i = 0; i < aux.length; i++ ){
-
             for( int j = 0; j< aux[i].length; j++ ){ 
            	 if( j%2 == 1)
         		 offx = 64 / 2;
@@ -95,6 +94,12 @@ public class Level {
         loadTileType32( index, 7 , 17 ); //medio
         setDeco( 4,4 ); //medio 
         deco[4][4].setSolid(true);
+
+        loadTileType32( index, 0, 10 );
+        setDeco( 10, 10 );
+        loadTileType32( index, 0, 11 );
+        setDeco( 10, 12 );
+        deco[10][10].setSolid(false);
         
         loadTileType32( index, 9 , 17 ); //esquina derecha
         setDeco(4,3); //esquina derecha
@@ -124,7 +129,7 @@ public class Level {
         loadTileType32( index, 1, 1 );
         initTiles();
         initDeco(index);
-        systems.MapLoader.loadMap(0,level[0]);
+        //systems.MapLoader.loadMap(0,level[0]);
     }
     
 

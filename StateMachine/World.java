@@ -7,6 +7,8 @@ import javax.swing.JComponent;
 
 import Data.CurrentData;
 import entity.Player;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import maps.GameMap;
 import maps.Level;
 import maps.Tile;
@@ -17,7 +19,7 @@ import systems.ListenKeys;
 public class World extends JComponent implements  GameState{
 
     //FIELDS -----------------
-	private GameStateManager state;
+    private GameStateManager state;
     private ListenKeys lKey;
     //--------------------------
 
@@ -27,6 +29,7 @@ public class World extends JComponent implements  GameState{
     private Tile[][] tiles, deco;
     private Graphics g;
     private Animator anim;
+    public JButton botonmierda = new JButton("lmao");
     
     private Point iso, pos, origin, aux;
     //--------------------------
@@ -38,18 +41,20 @@ public class World extends JComponent implements  GameState{
 		setData();
 		lKey = new ListenKeys();
         this.setFocusable(true);     
-        this.addKeyListener( lKey ); 
+        this.addKeyListener( lKey );
+        botonmierda.setBounds(100, 100, 50, 50);
+        CurrentData.getFrame().getContentPane();
         
 	}
 	
 	private void loadPlayer(){
-		jugador = new Player("lol",100, 192,192, 20, 20, 20,20 );
-		anim = jugador.getAnimation();
-        pos = jugador.getPos();
-        jugador.setOrigin( 32, 32 );
-        origin = jugador.getOrigin();
-        iso = new Point(  origin.x ,  origin.y );
-        aux = new Point();
+            jugador = new Player("lol",100, 192,192, 20, 20, 20,20 );
+            anim = jugador.getAnimation();
+            pos = jugador.getPos();
+            jugador.setOrigin( 32, 32 );
+            origin = jugador.getOrigin();
+            iso = new Point(  origin.x ,  origin.y );
+            aux = new Point();
 		toIso();
 	}
 	
@@ -88,7 +93,7 @@ public class World extends JComponent implements  GameState{
     }//func
 
     private void drawSquares(){	
-        g.setColor( Color.white );
+        g.setColor( new Color(21, 104, 64));
         int x,y;
         for( int i = 0; i <= 15; i++ ){
             for(int j = 0; j <= 41 ; j++ ){
@@ -96,6 +101,7 @@ public class World extends JComponent implements  GameState{
             		x = (i*64)-32;
             		y = ( j*16 )-16;
             		g.drawLine( x, y, x+64, y + 32 );
+                         g.setColor( new Color(18, 89, 26));
             		g.drawLine( x, y,x+64, y-32);
             	}
             }//inner for
@@ -149,9 +155,9 @@ public class World extends JComponent implements  GameState{
 		g = state.getGraphics();
 
         //ESCENARIO ---------------------
-		drawMap();     
-        drawSquares();
-		//debug();
+            drawMap();     
+            drawSquares();
+            debug();
 		// ------------------------------
                      
         // JUGADOR ---------------------  
