@@ -13,7 +13,7 @@ import maps.Tile;
 import systems.Animator;
 
 @SuppressWarnings("serial")
-public class Battle extends JComponent implements GameState {
+public class Battle implements GameState {
 
     //FIELDS -----------------
 	private GameStateManager state;
@@ -32,8 +32,8 @@ public class Battle extends JComponent implements GameState {
     //
 	public Battle( GameStateManager newGameState ){
 		state = newGameState;
-        this.setFocusable(true);     
-        this.addKeyListener( lKey ); 
+        //this.setFocusable(true);     
+        //this.addKeyListener( lKey ); 
 	}
 	
     private void idle(){
