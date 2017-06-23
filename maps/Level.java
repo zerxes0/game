@@ -71,8 +71,8 @@ public class Level {
         		 offx = 64 / 2;
         	 else
         		 offx = 0;
-            	aux[i][j] = new Tile( tiles, (i * 64) + offx , (j*32)/2 ); 
-            	deco[i][j] = new Tile( null, (i * 64) + offx , (j*32)/2  ); 
+           	 aux[i][j] = new Tile( tiles, (i * 64) + offx , (j*32)/2 ); 
+           	 deco[i][j] = new Tile( null, (i * 64) + offx , (j*32)/2  ); 
             	/*if ( j%2 == 0 ){
                     aux[i][j] = new Tile( tiles, ((i*64))*1, ((j*mult))*1  );
                     deco[i][j] = new Tile( null, (i*64)*1, (j*mult)*1, false );
@@ -124,11 +124,10 @@ public class Level {
         loadTileType32( index, 1, 1 );
         initTiles();
         initDeco(index);
+        systems.MapLoader.loadMap(0,level[0]);
     }
+    
 
-    public static GameMap getLevel( int index ){
-        return level[index];
-    }
-
+    public static GameMap getLevel( int index ){ return level[index];}
     public static Tile[][] getDeco( int index ){ return deco; }
 }
