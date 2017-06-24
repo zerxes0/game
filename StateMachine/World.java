@@ -7,8 +7,6 @@ import javax.swing.JComponent;
 
 import Data.CurrentData;
 import entity.Player;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 import maps.GameMap;
 import maps.Level;
 import maps.Tile;
@@ -29,7 +27,6 @@ public class World extends JComponent implements  GameState{
     private Tile[][] tiles, deco;
     private Graphics g;
     private Animator anim;
-    public JButton botonmierda = new JButton("lmao");
     
     private Point iso, pos, origin, aux;
     //--------------------------
@@ -42,9 +39,6 @@ public class World extends JComponent implements  GameState{
 		lKey = new ListenKeys();
         this.setFocusable(true);     
         this.addKeyListener( lKey );
-        botonmierda.setBounds(100, 100, 50, 50);
-        CurrentData.getFrame().getContentPane();
-        
 	}
 	
 	private void loadPlayer(){
@@ -53,9 +47,9 @@ public class World extends JComponent implements  GameState{
             pos = jugador.getPos();
             jugador.setOrigin( 32, 32 );
             origin = jugador.getOrigin();
-            iso = new Point(  origin.x ,  origin.y );
+            iso = jugador.getIso();
             aux = new Point();
-		toIso();
+            jugador.toIso();
 	}
 	
 	private void loadLevel(){
@@ -107,26 +101,14 @@ public class World extends JComponent implements  GameState{
             }//inner for
         }//for             
     } //func
-
-    private void toIso(){
-        int x = (int) ( origin.getX()/64 )*64;
-        int y = (int) ( origin.getY()/16 )*16;
-        int sx = x / 32;
-
-        int off = (sx % 2 == 1) ? 32 : 0;
-        int isoX = (x - off) / 64;
-        int isoY = (2 * y) / 32;     
-
-        iso.setLocation( isoX, isoY );
-    } 
     
     private void debug(){
         int row = (int) ( origin.getX() );
         int col = (int) ( origin.getY() );
-        toIso();
+        jugador.toIso();
         System.out.println("j:( " + pos.x + ", " + pos.y + " ) " );
         System.out.println("jugador ( " + (row) + ", " + (col) + " )" + 
-        		"[ " + (row/64) + ", " + (col/16) + " ]" + "iso x,y( " + (iso.x) + ", " + (iso.y) + " )"); 
+        		"[ " + (row/64) + ", " + (col/16) + " ]" + "iso x,y( " + (iso.y) + ", " + (iso.x) + " )"); 
         
         int x = deco[3][6].getPos().x;
         int y = deco[3][6].getPos().y;
@@ -155,18 +137,18 @@ public class World extends JComponent implements  GameState{
 		g = state.getGraphics();
 
         //ESCENARIO ---------------------
-            drawMap();     
-            drawSquares();
-            debug();
+		drawMap();     
+		drawSquares();
+		debug();
 		// ------------------------------
                      
         // JUGADOR ---------------------  
-		    if ( anim.getCurrentSheet() == 0 )
-                idle();
-		    if( anim.getCurrentSheet() == 1 )
-		    	move();
-		    if( anim.getCurrentSheet() == 2 )
-                attack();
+		if ( anim.getCurrentSheet() == 0 )
+            idle();
+		if( anim.getCurrentSheet() == 1 )
+            move();
+		if( anim.getCurrentSheet() == 2 )
+            attack();
 		// ------------------------------		
 	}
 	

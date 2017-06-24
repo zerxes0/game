@@ -5,7 +5,7 @@ import java.awt.Dimension;
 public class App {
 
     public static void main( String[] args ){
-    	Game window = new Game( new Dimension(932,626) );
+    	Game window = new Game( new Dimension(932,658) );
     	window.init();
         //GameFrame window = new GameFrame();
         //evitamos un warning

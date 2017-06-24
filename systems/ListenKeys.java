@@ -32,19 +32,7 @@ public class ListenKeys implements KeyListener {
         iso = CurrentData.iso;
         origin = CurrentData.origin;
         aux = CurrentData.aux;
-    }
-    
-    private void toIso(){
-        int x = (int) ( origin.getX()/64 )*64;
-        int y = (int) ( origin.getY()/16 )*16;
-        int sx = x / 32;
-
-        int off = (sx % 2 == 1) ? 32 : 0;
-        int isoX = (x - off) / 64;
-        int isoY = (2 * y) / 32;     
-
-        iso.setLocation( isoX, isoY );
-    } 
+    }  
     
     private boolean checkCollision( String axis ){
         try{
@@ -81,7 +69,7 @@ public class ListenKeys implements KeyListener {
         left = e.getKeyCode() == KeyEvent.VK_LEFT;
         right = e.getKeyCode() == KeyEvent.VK_RIGHT;
         attack = e.getKeyCode() == KeyEvent.VK_SPACE;
-        toIso();
+        jugador.toIso();
         //-------------------------------------------
         
         //BATTLE VARIABLES
@@ -123,7 +111,7 @@ public class ListenKeys implements KeyListener {
 
     private void inBattle(){
         aux = jugador.getPos();
-        pos.setLocation( aux.x , aux.y ); // Point(x,y)
+        pos.setLocation( aux.y , aux.x ); // Point(x,y)
         System.out.println("reach");
         if( up ){
             if ( currentPos == Pos.MID ){

@@ -64,28 +64,31 @@ public class Level {
     private static void initTiles(){
     	//int mult = 16;
     	int offx;
-        for( int i = 0; i < aux.length; i++ ){
+        /*for( int i = 0; i < aux.length; i++ ){
             for( int j = 0; j< aux[i].length; j++ ){ 
            	 if( j%2 == 1)
         		 offx = 64 / 2;
         	 else
         		 offx = 0;
            	 aux[i][j] = new Tile( tiles, (i * 64) + offx , (j*32)/2 ); 
-           	 deco[i][j] = new Tile( null, (i * 64) + offx , (j*32)/2  ); 
-            	/*if ( j%2 == 0 ){
-                    aux[i][j] = new Tile( tiles, ((i*64))*1, ((j*mult))*1  );
-                    deco[i][j] = new Tile( null, (i*64)*1, (j*mult)*1, false );
-            	}else{
-            		aux[i][j] = new Tile( tiles, ( (i*64)-32 )*1, ((j*mult))*1 );
-            		deco[i][j] = new Tile( null, (i*64)-32*1, (j*mult)*1, false );
-            	} */
+           	 deco[i][j] = new Tile( null, (i * 64) + offx , (j*32)/2  ); */
+        for( int i = 0; i < aux.length; i++ ){
+          	 if( i%2 == 1)
+       		 offx = 64 / 2;
+       	 else
+       		 offx = 0;
+            for( int j = 0; j< aux[i].length; j++ ){ 
+
+           	 aux[i][j] = new Tile( tiles,  (j*64)  + offx ,(i * 32)/2  ); 
+           	 deco[i][j] = new Tile( null, (j*64)  + offx ,(i * 32)/2  ); 
+           	 
             }
 
         }
     }//func
 
     private static void setDeco( int x, int y){
-        deco[x][y].setSprite(tiles);
+        deco[y][x].setSprite(tiles);
     }
 
     private static void initDeco( int index ){
@@ -94,12 +97,6 @@ public class Level {
         loadTileType32( index, 7 , 17 ); //medio
         setDeco( 4,4 ); //medio 
         deco[4][4].setSolid(true);
-
-        loadTileType32( index, 0, 10 );
-        setDeco( 10, 10 );
-        loadTileType32( index, 0, 11 );
-        setDeco( 10, 12 );
-        deco[10][10].setSolid(false);
         
         loadTileType32( index, 9 , 17 ); //esquina derecha
         setDeco(4,3); //esquina derecha
@@ -129,7 +126,7 @@ public class Level {
         loadTileType32( index, 1, 1 );
         initTiles();
         initDeco(index);
-        //systems.MapLoader.loadMap(0,level[0]);
+        systems.MapLoader.loadMap(0,level[0]);
     }
     
 

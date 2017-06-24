@@ -20,12 +20,6 @@ public class CurrentData {
     public static Tile[][] tiles, deco;
     public static Animator anim;    
     public static Point iso, pos, origin, aux;  
-    private static JFrame frame;
-    
-    public static void setFrame( JFrame frame ){
-        CurrentData.frame = frame;
-    }
-    public static JFrame getFrame(){
-        return CurrentData.frame;
-    }
+    public static JFrame frame;
+    public static JPanel panel;
 }

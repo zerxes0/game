@@ -25,8 +25,10 @@ public class Game{
     	window.init( (int) dimension.getWidth(), (int) dimension.getHeight() );
     	gameStateMachine = new GameStateManager( dimension );
     	KeyListener[] l = gameStateMachine.getComponent().getKeyListeners();
-    	window.getCanvas().addKeyListener( l[0]);
-    	window.getCanvas().requestFocus();
+    	/*window.getCanvas().addKeyListener( l[0]);
+    	window.getCanvas().requestFocus();*/
+    	window.getContentPane().addKeyListener(l[0]);
+    	window.getContentPane().requestFocus();
     }
 
     private void update(){    	
@@ -35,15 +37,18 @@ public class Game{
     
     public void init(){		
     	try{
-    		window.getCanvas().createBufferStrategy(2);
-    		bs = window.getCanvas().getBufferStrategy();
+    		//window.getCanvas().createBufferStrategy(2);
+    		window.createBufferStrategy(2);
+    		//bs = window.getCanvas().getBufferStrategy();
+    		bs = window.getBufferStrategy();
     	}
     	catch(Exception e){
     		e.printStackTrace();
     	}
     	Time.start();    
         
-        //gameStateMachine.world();    
+       /* CurrentData.frame.getContentPane().remove( CurrentData.panel );  */
+        gameStateMachine.world();  
         start();
     }
     

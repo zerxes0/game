@@ -11,7 +11,7 @@ public class Player extends Character {
 	private SpriteSheet[] sheet;
     private Animator animator;
     private Collider collider;
-    private int velocity = 3;
+    private int velocity = 5;
     /*TODO
      * Atributos/funciones del sistema de combate.
      */
