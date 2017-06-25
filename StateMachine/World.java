@@ -110,7 +110,7 @@ public class World extends JComponent implements  GameState {
         jugador.toIso();
         System.out.println("j:( " + pos.x + ", " + pos.y + " ) " );
         System.out.println("jugador ( " + (row) + ", " + (col) + " )" + 
-        		"[ " + (row/64) + ", " + (col/16) + " ]" + "iso x,y( " + (iso.y) + ", " + (iso.x) + " )");
+        		"[ " + (row/64) + ", " + (col/16) + " ]" + "iso x,y( " + (iso.x) + ", " + (iso.y) + " )");
 
         System.out.println( deco[4][6].getPos().x + "," + deco[4][6].getPos().y );
 

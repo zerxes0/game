@@ -36,7 +36,7 @@ public abstract class GameObject{
         int isoX = (x - off) / 64; 
         int isoY =  (2 * y) / 32;
         
-        iso.setLocation( isoY, isoX );
+        iso.setLocation( isoX, isoY );
     } 
 
     public Point getPos(){ return this.pos; }
