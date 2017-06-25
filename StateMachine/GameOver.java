@@ -1,13 +1,11 @@
 package StateMachine;
 
-import Data.CurrentData;
 
 public class GameOver implements GameState {
 
-	GameStateManager state;
-    CurrentData graphics;
-	
-	public GameOver( GameStateManager newGameState ){
+	private GameStateManager state;
+
+	GameOver(GameStateManager newGameState){
 		state = newGameState;
 	}
 

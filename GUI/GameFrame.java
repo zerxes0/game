@@ -9,9 +9,6 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame {
-	//private JFrame frame;
-    private JPanel panel;
-    private JPanel gamePanel;
     private Canvas canvas;
 
     public void init( int width, int height ){
@@ -22,7 +19,7 @@ public class GameFrame extends JFrame {
         canvas.setMinimumSize(new Dimension(width, height));
         CurrentData.canvas = canvas;
 
-        panel = new JPanel();
+        JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(width, height));
 		panel.setMaximumSize(new Dimension(width, height));
 		panel.setMinimumSize(new Dimension(width, height));
@@ -36,13 +33,10 @@ public class GameFrame extends JFrame {
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	setVisible(true);    	     
 
-
         CurrentData.frame = this;
     }
 
     public Canvas getCanvas(){ return canvas; }
-	public JFrame getFrame(){
-		return this;
-	}
+	public JFrame getFrame(){ return this; }
 
 }

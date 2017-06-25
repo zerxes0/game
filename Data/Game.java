@@ -12,18 +12,16 @@ import StateMachine.GameStateManager;
 
 import static java.lang.Thread.*;
 
-public class Game{
+class Game{
 	//ticker
 	private boolean running = true;
 	//-----------------------------
 	
 	private GameStateManager gameStateMachine;
 	private GameFrame window;
-	private static Graphics g;
 	private BufferStrategy bs;
-	private boolean inGame = false;
-	
-    public Game( Dimension dimension ){ 
+
+    Game(Dimension dimension){
     	window = new GameFrame();
     	window.init( (int) dimension.getWidth(), (int) dimension.getHeight() );
     	gameStateMachine = new GameStateManager( dimension );
@@ -44,7 +42,7 @@ public class Game{
         }
 	}
 
-    public void init(){		
+    void init(){
     	try{
     		menu();
             // no queremos que bs = buffer se  inicialize hasta que el juego
@@ -58,7 +56,6 @@ public class Game{
     	}
     	catch(Exception e){
     		e.printStackTrace();
-			System.out.println( e.getCause() );
 
     	}
     	Time.start();    
@@ -67,11 +64,11 @@ public class Game{
         start();
     }
     
-    private void start(){    	
+    private void start(){
 		while( running ){
 			try{
                 bs = CurrentData.canvas.getBufferStrategy();
-                g = bs.getDrawGraphics();					
+				Graphics g = bs.getDrawGraphics();
                 gameStateMachine.setG(g);
                 update();
                 bs.show();
@@ -83,7 +80,5 @@ public class Game{
 			}
 		}		
     }
-    
-    public static Graphics getG(){ return g; } 
-    
-  }
+
+}

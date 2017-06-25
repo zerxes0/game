@@ -1,11 +1,5 @@
 package maps;
 
-import java.io.FileReader;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
 import Data.GameObject;
 import Data.SpriteSheet;
 
@@ -16,7 +10,7 @@ public class GameMap extends GameObject {
     private Tile[][] deco = new Tile[38][14];
     private Tile[][] deco2 = new Tile[38][14];
 
-    public GameMap( SpriteSheet sheet, int widht, int height ){
+    GameMap(SpriteSheet sheet, int widht, int height){
         super( widht, height );
         this.sheet = sheet;
     }

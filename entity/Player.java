@@ -23,7 +23,7 @@ public class Player extends Character {
         collider = new Collider( x, y , w, h, ox, oy );
     }
     
-    public void init(){
+    private void init(){
         //se usa para inicializar
         sheet = new SpriteSheet[3];
         for (int i = 0; i < sheet.length; i++) {
@@ -90,7 +90,7 @@ public class Player extends Character {
         return colFromBottom || colFromUp;
     }
     
-    public void updateBounds(){ collider.updateBound(pos.x, pos.y); }
+    private void updateBounds(){ collider.updateBound(pos.x, pos.y); }
     
     public void setVelocity( int velocity ){ this.velocity = velocity; }
     public void setSheet( int i, String path ){ sheet[i] = new SpriteSheet( ImageLoader.loadImage(path) ); }

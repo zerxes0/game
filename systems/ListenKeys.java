@@ -11,8 +11,8 @@ import maps.Tile;
 
 public class ListenKeys implements KeyListener {
     private boolean up, down, left, right, attack;
-    private enum Pos{ TOP, MID, BOT };
-    Pos currentPos = Pos.MID;
+    private enum Pos{ TOP, MID, BOT }
+    private Pos currentPos = Pos.MID;
     
     //AUXILIAR FIELDS ----------
     private GameStateManager state;
@@ -20,7 +20,8 @@ public class ListenKeys implements KeyListener {
     private Tile[][]  deco;
     private Animator anim;
     
-    private Point iso, aux, origin;
+    private Point iso;
+    private Point aux;
     private Point pos = new Point();
     //--------------------------
     
@@ -30,7 +31,6 @@ public class ListenKeys implements KeyListener {
         deco = CurrentData.deco;
         anim = CurrentData.anim;
         iso = CurrentData.iso;
-        origin = CurrentData.origin;
         aux = CurrentData.aux;
     }  
     

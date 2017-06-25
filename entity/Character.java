@@ -3,14 +3,14 @@ package entity;
 import Data.GameObject;
 
 public abstract class Character extends GameObject {
-    public float life;
-    public String name;  
+    private float life;
+    private String name;
 
     public Character( String name, float life ){
         this.name = name;
         this.life = life;
     }
-    public Character( String name, float life, int x, int y){
+    Character(String name, float life, int x, int y){
         super( x, y );
     }
 

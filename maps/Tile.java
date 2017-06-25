@@ -12,7 +12,7 @@ public class Tile extends GameObject {
     //se crea un consturctor vacio para poder crear variables auxiliares
     // que no tengan que recibir parametros y solo sirvan de referencia
     public Tile(){};
-    public Tile( BufferedImage sprite, int x, int y ){
+    Tile(BufferedImage sprite, int x, int y){
         super( x, y );
         this.sprite = sprite;
         this.solid = false;

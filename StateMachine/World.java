@@ -31,7 +31,7 @@ public class World extends JComponent implements  GameState {
     private Point iso, pos, origin, aux;
     //--------------------------
     
-	public World( GameStateManager newGameState ){
+	World(GameStateManager newGameState){
 		state = newGameState;
 		loadPlayer();
 		loadLevel();

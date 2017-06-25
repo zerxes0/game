@@ -1,13 +1,10 @@
 package StateMachine;
 
-import Data.CurrentData;
-
 public class Pause implements GameState{
 
-	GameStateManager state;
-    CurrentData graphics;
-	
-	public Pause( GameStateManager newGameState ){
+	private GameStateManager state;
+
+	Pause( GameStateManager newGameState ){
 		state = newGameState;
 	}
 	@Override
@@ -19,19 +16,19 @@ public class Pause implements GameState{
 	public void menu() {
 		// TODO Auto-generated method stub
         System.out.println( "Mundo->Menu " );
-        state.setGameState( state.getMenu() );		
+        state.setGameState( state.getMenu() );
 	}
 
 	@Override
 	public void world() {
         System.out.println( "Renaudando juego..." );
-        state.setGameState( state.getWorld() );		
+        state.setGameState( state.getWorld() );
 	}
 
 	@Override
 	public void battle() {
         System.out.println( "Renaudando batalla" );
-        state.setGameState( state.getBattle() );		
+        state.setGameState( state.getBattle() );
 	}
 
 	@Override

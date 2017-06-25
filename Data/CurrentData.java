@@ -1,7 +1,6 @@
 package Data;
 
 import java.awt.Point;
-import java.awt.image.BufferStrategy;
 
 import StateMachine.GameStateManager;
 import systems.ListenKeys;
@@ -9,7 +8,6 @@ import entity.Player;
 import java.awt.Canvas;
 import java.awt.Dimension;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import maps.GameMap;
 import maps.Tile;

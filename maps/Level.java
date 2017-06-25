@@ -64,24 +64,14 @@ public class Level {
     private static void initTiles(){
     	//int mult = 16;
     	int offx;
-        /*for( int i = 0; i < aux.length; i++ ){
-            for( int j = 0; j< aux[i].length; j++ ){ 
-           	 if( j%2 == 1)
-        		 offx = 64 / 2;
-        	 else
-        		 offx = 0;
-           	 aux[i][j] = new Tile( tiles, (i * 64) + offx , (j*32)/2 ); 
-           	 deco[i][j] = new Tile( null, (i * 64) + offx , (j*32)/2  ); */
         for( int i = 0; i < aux.length; i++ ){
-          	 if( i%2 == 1)
+         if( i%2 == 1)
        		 offx = 64 / 2;
        	 else
        		 offx = 0;
             for( int j = 0; j< aux[i].length; j++ ){ 
-
-           	 aux[i][j] = new Tile( tiles,  (j*64)  + offx ,(i * 32)/2); 
+           	 aux[i][j] = new Tile( tiles,  (j*64)  + offx ,(i * 32)/2);
            	 deco[i][j] = new Tile( null, (j*64)  + offx ,(i * 32)/2); 
-           	 
             }
 
         }

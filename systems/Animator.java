@@ -12,7 +12,7 @@ public class Animator {
         //Esta funcion realiza operaciones matematicas para
         //calcular cada cuantos pixeles es el siguiente frame
         //de la hoja de sprites para poder hacer la animacion
-        int aux = 0;
+        int aux;
         for( int i = 0; i < sheet.length; i ++ ){
         aux = sheet[i].sheetWidht() / sheet[i].sheetHeight();
         nextFrame[i] = sheet[i].sheetWidht() / aux ;

@@ -4,10 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import javax.swing.JComponent;
 
 import Data.CurrentData;
-import systems.ListenKeys;
 import entity.Player;
 import maps.Tile;
 import systems.Animator;
@@ -17,7 +15,6 @@ public class Battle implements GameState {
 
     //FIELDS -----------------
 	private GameStateManager state;
-    private ListenKeys lKey;
     private boolean inBattle = false;
     //--------------------------
 	
@@ -26,11 +23,12 @@ public class Battle implements GameState {
     private Tile[][] tiles, deco;
     private Graphics g;
     private Animator anim;
-    
-    private Point iso, pos, aux, origin;
+
+    private Point pos;
+
     //--------------------------
     //
-	public Battle( GameStateManager newGameState ){
+    Battle(GameStateManager newGameState){
 		state = newGameState;
         //this.setFocusable(true);     
         //this.addKeyListener( lKey ); 
@@ -79,21 +77,9 @@ public class Battle implements GameState {
               
     }
 
-    private void toIso(){
-        int x = (int) ( origin.getX()/64 )*64;
-        int y = (int) ( origin.getY()/16 )*16;
-        int sx = x / 32;
-
-        int off = (sx % 2 == 1) ? 32 : 0;
-        int isoX = (x - off) / 64;
-        int isoY = (2 * y) / 32;     
-
-        iso.setLocation( isoX, isoY );
-    }
-    
 	@Override
 	public void draw(){
-		if( inBattle == false ){
+		if(!inBattle){
 			battle();
 			inBattle = true;
 			g.dispose();
@@ -138,8 +124,6 @@ public class Battle implements GameState {
         deco = CurrentData.deco;
         anim = CurrentData.anim;
         pos = CurrentData.pos;
-        iso = CurrentData.iso;
-        aux = CurrentData.aux;
         //lKey = CurrentData.lKey;
 	}
 
