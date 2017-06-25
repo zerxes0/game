@@ -64,30 +64,30 @@ public class Player extends Character {
         }
     }
 
-    public boolean checkCollision( int colX, int colY ){
-            int x = (int) ( collider.getBounds().getX() );
-            int y = (int) ( collider.getBounds().getY() );
-            int px0 = colX, py0 = colY+16;
-            int px1 = colX+32, py1 = colY;
-            int px2 = colX+32, py2 = colY+32;
-            int px3 = colX+64, py3 = colY+16;
-            
-            x /= 64; y /= 16;
-            x *= 64; y *= 16;
-            System.out.println( "j( " + (x) + ", " + (y) + " )" );
-            System.out.println();
+    public boolean checkCollision( int colX, int colY ) {
+        int x = (int) (collider.getBounds().getX());
+        int y = (int) (collider.getBounds().getY());
+        int px0 = colX, py0 = colY + 16;
+        int px1 = colX + 32, py1 = colY;
+        int px2 = colX + 32, py2 = colY + 32;
+        int px3 = colX + 64, py3 = colY + 16;
 
-            //PIXEL PERFECT COLLITIONS
-            boolean p0 = (x >= px0 || y >= py0) || (x*2 >= px0 || y >= py0) || (x >= px0 || y*2 >= py0) || (x*2 >= px0 || y*2 >= py0);
-            boolean p1 = (x >= px1 || y >= py1) || (x*2 >= px1 || y >= py1) || (x >= px1 || y*2 >= py1) || (x*2 >= px1 || y*2 >= py1);
-            boolean p2 = (x >= px2 || y >= py2) || (x*2 >= px2 || y >= py2) || (x >= px2 || y*2 >= py2) || (x*2 >= px2 || y*2 >= py2);
-            boolean p3 = (x >= px3 || y >= py3) || (x*2 >= px3 || y >= py3) || (x >= px3 || y*2 >= py3) || (x*2 >= px3 || y*2 >= py3);
-            boolean colFromBottom =  (p0 || p2 || p3);
-            boolean colFromUp = (p0 || p1 || p3);
+        x /= 64;
+        y /= 16;
+        x *= 64;
+        y *= 16;
+        System.out.println("j( " + (x) + ", " + (y) + " )");
+        System.out.println();
 
-            if( colFromBottom )
-                return true;
-            else return colFromUp;
+        //PIXEL PERFECT COLLITIONS
+        boolean p0 = (x >= px0 || y >= py0) || (x * 2 >= px0 || y >= py0) || (x >= px0 || y * 2 >= py0) || (x * 2 >= px0 || y * 2 >= py0);
+        boolean p1 = (x >= px1 || y >= py1) || (x * 2 >= px1 || y >= py1) || (x >= px1 || y * 2 >= py1) || (x * 2 >= px1 || y * 2 >= py1);
+        boolean p2 = (x >= px2 || y >= py2) || (x * 2 >= px2 || y >= py2) || (x >= px2 || y * 2 >= py2) || (x * 2 >= px2 || y * 2 >= py2);
+        boolean p3 = (x >= px3 || y >= py3) || (x * 2 >= px3 || y >= py3) || (x >= px3 || y * 2 >= py3) || (x * 2 >= px3 || y * 2 >= py3);
+        boolean colFromBottom = (p0 || p2 || p3);
+        boolean colFromUp = (p0 || p1 || p3);
+
+        return colFromBottom || colFromUp;
     }
     
     public void updateBounds(){ collider.updateBound(pos.x, pos.y); }
