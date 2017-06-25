@@ -14,7 +14,7 @@ import systems.Animator;
 import systems.ListenKeys;
 
 @SuppressWarnings("serial")
-public class World extends JComponent implements  GameState{
+public class World extends JComponent implements  GameState {
 
     //FIELDS -----------------
     private GameStateManager state;
@@ -89,8 +89,8 @@ public class World extends JComponent implements  GameState{
     private void drawSquares(){	
         g.setColor( new Color(21, 104, 64));
         int x,y;
-        for( int i = 0; i <= 15; i++ ){
-            for(int j = 0; j <= 41 ; j++ ){
+        for( int i = 0; i <= 14; i++ ){
+            for(int j = 0; j <= 39 ; j++ ){
             	if ( j%2 != 0 ){ 
             		x = (i*64)-32;
             		y = ( j*16 )-16;
@@ -149,7 +149,10 @@ public class World extends JComponent implements  GameState{
             move();
 		if( anim.getCurrentSheet() == 2 )
             attack();
-		// ------------------------------		
+		// ------------------------------	
+		/*g.setColor(Color.white);
+		g.fillRect(40, 32, 100, 100);*/
+		
 	}
 	
 	@Override public void menu() {
@@ -183,5 +186,6 @@ public class World extends JComponent implements  GameState{
         CurrentData.origin = origin;
         CurrentData.lKey = lKey;
         CurrentData.state = state;
-	}	
+	}
+
 }

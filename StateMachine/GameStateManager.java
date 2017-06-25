@@ -26,7 +26,7 @@ public class GameStateManager {
 		pause = new Pause(this);
 		gameOver = new GameOver(this);
 		
-        currentState = menu;     
+        currentState = menu;
 	}
 	
 	public void draw(){     

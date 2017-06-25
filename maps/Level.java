@@ -79,8 +79,8 @@ public class Level {
        		 offx = 0;
             for( int j = 0; j< aux[i].length; j++ ){ 
 
-           	 aux[i][j] = new Tile( tiles,  (j*64)  + offx ,(i * 32)/2  ); 
-           	 deco[i][j] = new Tile( null, (j*64)  + offx ,(i * 32)/2  ); 
+           	 aux[i][j] = new Tile( tiles,  (j*64)  + offx ,(i * 32)/2); 
+           	 deco[i][j] = new Tile( null, (j*64)  + offx ,(i * 32)/2); 
            	 
             }
 
