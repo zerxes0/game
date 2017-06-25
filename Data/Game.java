@@ -20,6 +20,7 @@ class Game{
 	private GameStateManager gameStateMachine;
 	private GameFrame window;
 	private BufferStrategy bs;
+	private Graphics g;
 
     Game(Dimension dimension){
     	window = new GameFrame();
@@ -40,6 +41,7 @@ class Game{
         while( gameStateMachine.getCurrentState() == gameStateMachine.getMenu() ){
             update();
         }
+        return;
 	}
 
     void init(){
@@ -56,29 +58,33 @@ class Game{
     	}
     	catch(Exception e){
     		e.printStackTrace();
-
     	}
     	Time.start();    
-        
-        gameStateMachine.world();
+        //gameStateMachine.world();
         start();
     }
     
     private void start(){
-		while( running ){
-			try{
-                bs = CurrentData.canvas.getBufferStrategy();
-				Graphics g = bs.getDrawGraphics();
-                gameStateMachine.setG(g);
-                update();
-                bs.show();
-                g.dispose();
+        Thread t = new Thread() {
+			@Override public void run() {
+				while (running) {
+					try {
+						bs = CurrentData.canvas.getBufferStrategy();
+						g = bs.getDrawGraphics();
+						gameStateMachine.setG(g);
+						update();
+						bs.show();
+						g.dispose();
 
-				sleep( Time.getTime() );
-			}catch( Exception e ){
-				e.getStackTrace();
+						sleep(Time.getTime());
+					} catch (Exception e) {
+						e.getStackTrace();
+					}
+				}
 			}
-		}		
+		};
+        t.start();
+
     }
 
 }

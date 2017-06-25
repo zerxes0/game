@@ -29,7 +29,7 @@ public class Menu implements GameState {
     }
 	
 	@Override public void draw(){
-        System.out.println("reach menu draw");
+        //System.out.println("reach menu draw");
         //g = state.getGraphics();
 
         //cadena("hola A33", 14, 400, 350, Color.BLACK);
@@ -74,7 +74,7 @@ public class Menu implements GameState {
 		public void actionPerformed(ActionEvent evt) {
 			System.out.println( "reach0");
 			if( evt.getSource() == boton ){
-				System.out.println( "reach");
+				System.out.println( "reach boton");
 				world();
 			}
 			

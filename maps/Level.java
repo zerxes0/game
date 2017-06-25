@@ -14,6 +14,7 @@ public class Level {
     private static BufferedImage tiles;
     private static Tile[][] aux;
     private static Tile[][] deco;
+    private static  Tile[][] deco2;
     private static SpriteSheet sheet;
     //-------------------
 
@@ -58,7 +59,8 @@ public class Level {
         sheet = new SpriteSheet( ImageLoader.loadImage( path ) );
         level[index] = new GameMap( sheet, 896,616 );
         aux = level[index].getTiles();
-        deco = level[index].getDeco();
+        deco = level[index].getLayer1();
+        deco2 = level[index].getLayer2();
     }
     
     private static void initTiles(){
@@ -69,11 +71,11 @@ public class Level {
        		 offx = 64 / 2;
        	 else
        		 offx = 0;
-            for( int j = 0; j< aux[i].length; j++ ){ 
-           	 aux[i][j] = new Tile( tiles,  (j*64)  + offx ,(i * 32)/2);
-           	 deco[i][j] = new Tile( null, (j*64)  + offx ,(i * 32)/2); 
+            for( int j = 0; j< aux[i].length; j++ ){
+                aux[i][j] = new Tile( tiles,  (j*64)  + offx ,(i * 32)/2);
+           	    deco[i][j] = new Tile( null, (j*64)  + offx ,(i * 32)/2);
+                deco2[i][j] = new Tile( null, (j*64)  + offx ,(i * 32)/2);
             }
-
         }
     }//func
 
@@ -83,8 +85,8 @@ public class Level {
     }
 
     private static void initDeco( int index ){
-        deco = level[index].getDeco();
-        
+        deco = level[index].getLayer1();
+
         loadTileType32( index, 7 , 17 ); //medio
         setDeco(4, 4, true); //medio 
         
@@ -101,7 +103,7 @@ public class Level {
         setDeco(4, 6, true); //esquina inferior izquierda
         
         loadTileType32( index, 2, 17 ); //medio inferior
-        setDeco(4, 5, true);//medio inferior   
+        setDeco(4, 5, true);//medio inferior
     }
 
     private static void level1( String path ){
@@ -111,7 +113,15 @@ public class Level {
         loadTileType32( index, 1, 1 );
         initTiles();
         initDeco(index);
-        systems.MapLoader.loadMap(0,level[0]);
+        systems.MapLoader.loadMap(level[0]);
+       /* for( int i = 0; i < deco.length; i++ ) {
+            for (int j = 0; j < deco[i].length; j++) {
+                if( deco[i][j].getSprite() != null ){
+                    deco[i][j].setSolid(true);
+                }
+            }
+        }*/
+
     }
     
 

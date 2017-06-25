@@ -20,6 +20,6 @@ public class GameMap extends GameObject {
 
     public SpriteSheet getSheet() { return sheet; }
     public Tile[][] getTiles() { return tiles; }
-    public Tile[][] getDeco(){ return deco; }
-
+    public Tile[][] getLayer1(){ return deco; }
+    public Tile[][] getLayer2(){ return deco2; }
 }

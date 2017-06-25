@@ -24,7 +24,7 @@ public class World extends JComponent implements  GameState {
     //AUXILIAR FIELDS ----------
     private Player jugador;
     private GameMap lvl;
-    private Tile[][] tiles, deco;
+    private Tile[][] tiles, deco,deco2;
     private Graphics g;
     private Animator anim;
     
@@ -42,7 +42,7 @@ public class World extends JComponent implements  GameState {
 	}
 	
 	private void loadPlayer(){
-            jugador = new Player("lol",100, 192,192, 20, 20, 20,20 );
+            jugador = new Player("lol",100, 352,192, 20, 20, 20,20 );
             anim = jugador.getAnimation();
             pos = jugador.getPos();
             jugador.setOrigin( 32, 32 );
@@ -56,7 +56,8 @@ public class World extends JComponent implements  GameState {
         Level.generateLevel( 0 );
         lvl = Level.getLevel( 0 );
         tiles = lvl.getTiles();
-        deco = lvl.getDeco();
+        deco = lvl.getLayer1();
+        deco2 = lvl.getLayer2();
 	}
     
     private void idle(){
@@ -84,6 +85,7 @@ public class World extends JComponent implements  GameState {
             for(int j = 0; j < tiles[i].length; j++ ){
                 g.drawImage( tiles[i][j].getSprite(), tiles[i][j].getPos().x, tiles[i][j].getPos().y, null );
                 g.drawImage( deco[i][j].getSprite(), deco[i][j].getPos().x, deco[i][j].getPos().y, null );
+                g.drawImage( deco2[i][j].getSprite(), deco[i][j].getPos().x, deco[i][j].getPos().y, null );
             }//inner for
         }//for
     }//func
@@ -114,19 +116,6 @@ public class World extends JComponent implements  GameState {
 
         System.out.println( deco[4][6].getPos().x + "," + deco[4][6].getPos().y );
 
-        int x = deco[3][6].getPos().x;
-        int y = deco[3][6].getPos().y;
-        
-        g.setColor(Color.MAGENTA);
-        g.fillOval( (origin.x), (origin.y), 15, 15);
-        g.drawRect(pos.x, pos.y, 64, 64);     
-        
-        g.drawRect(x,y,64,32);     
-        g.drawLine(x , y+16, x+32, y); //p0p1
-        g.drawLine( x + 64, y + 16, x+32  , y); // p1p3 
-        g.drawLine( x, y+16, x+32, y + 32); // p0p2
-        g.drawLine( x + 64, y+16, x+32, y + 32); // p0p2
-        
         g.setColor( Color.red );
         g.drawRect(origin.x, origin.y, 64-48, 64-48);
         
