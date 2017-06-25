@@ -3,10 +3,11 @@ package StateMachine;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import Data.CurrentData;
+import org.omg.CORBA.Current;
+import sun.util.resources.cldr.ebu.CurrencyNames_ebu;
 
 public class Menu implements GameState {
 
@@ -17,15 +18,17 @@ public class Menu implements GameState {
 	
 	public Menu( GameStateManager newGameState ){
 		state = newGameState;
-        boton = new JButton( "Hola");
+        boton = new JButton( "Start");
+		JPanel menuPanel = CurrentData.menuPanel;
 
-
-        CurrentData.panel.setBackground(Color.cyan);
-		CurrentData.panel.setLayout( new FlowLayout() );
-		CurrentData.panel.add(boton);
-		CurrentData.panel.remove( CurrentData.canvas );
-		CurrentData.panel.revalidate();
+        menuPanel.setBackground(Color.cyan);
+		menuPanel.setLayout( new FlowLayout() );
+		menuPanel.add(boton);
         boton.addActionListener(lbutton);
+
+        CurrentData.layout.show( CurrentData.panel, CurrentData.menu);
+        CurrentData.frame.revalidate();
+
     }
 	
 	@Override public void draw(){
@@ -50,7 +53,6 @@ public class Menu implements GameState {
 		System.out.println( " Entering World state"	 );
         //para cambiar de estado solo usamos el initCanvas
         //y luego transicionamos
-        CurrentData.initCanvas();
         state.setGameState( state.getWorld());
 	}
 
@@ -69,17 +71,13 @@ public class Menu implements GameState {
 	}
 	
 	private class ButtonListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent evt) {
+			@Override public void actionPerformed(ActionEvent evt) {
 			System.out.println( "reach0");
 			if( evt.getSource() == boton ){
 				System.out.println( "reach boton");
 				world();
 			}
-			
 		}
-		
 	}
 
 }

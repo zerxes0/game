@@ -1,14 +1,14 @@
 package Data;
 
-import java.awt.Point;
+import java.awt.*;
 
 import StateMachine.GameStateManager;
+import org.omg.CORBA.Current;
 import systems.ListenKeys;
 import entity.Player;
-import java.awt.Canvas;
-import java.awt.Dimension;
 
-import javax.swing.JPanel;
+import javax.swing.*;
+
 import maps.GameMap;
 import maps.Tile;
 import systems.Animator;
@@ -23,19 +23,16 @@ public class CurrentData {
     public static Animator anim;    
     public static Point iso, pos, origin, aux;  
     public static GameFrame frame;
+    public static JPanel menuPanel;
     public static JPanel panel;
+    public static JPanel gamePanel;
     public static Canvas canvas;
+    public static CardLayout layout;
+    public static final String menu = "menu";
+    public static final String game = "game";
 
     public static void initCanvas(){
-        frame.remove(panel); //removemos el panel inicial ( en el que se encuentra el menu).
-        panel = new JPanel(); //creamos un nuevo panel.
-        panel.setPreferredSize( new Dimension( frame.getWidth(),frame.getHeight() ) );
-        panel.setMaximumSize( new Dimension( frame.getWidth(),frame.getHeight() ) );
-        panel.setMinimumSize( new Dimension( frame.getWidth(),frame.getHeight() ) );
-        canvas = frame.getCanvas(); //obtenemos el canvas que se creo en el frame para volverlo a aÑadir
-        //ya que estaba dentro del panel y el canvas debe ser introducido en algo para inicializarlo
-        panel.add(canvas); //entonces le añadimos el canvas...
-        frame.getContentPane().add(panel); //se lo añadimos al frame.
-        frame.revalidate(); // aqui en frame comprueba los componentes que tiene y el juego sigue
+        layout.show(panel, game);
+        frame.revalidate();
     }
 }

@@ -27,6 +27,7 @@ public class World extends JComponent implements  GameState {
     private Tile[][] tiles, deco,deco2;
     private Graphics g;
     private Animator anim;
+    private boolean firstCall = true;
     
     private Point iso, pos, origin, aux;
     //--------------------------
@@ -79,16 +80,25 @@ public class World extends JComponent implements  GameState {
     }
 
     private void drawMap(){
+        g = state.getGraphics();
         g.setColor(Color.BLACK);
         g.fillRect( 0,0,CurrentData.frame.getWidth(), CurrentData.frame.getHeight() );
         for( int i = 0; i < tiles.length; i++ ){
             for(int j = 0; j < tiles[i].length; j++ ){
                 g.drawImage( tiles[i][j].getSprite(), tiles[i][j].getPos().x, tiles[i][j].getPos().y, null );
                 g.drawImage( deco[i][j].getSprite(), deco[i][j].getPos().x, deco[i][j].getPos().y, null );
-                g.drawImage( deco2[i][j].getSprite(), deco[i][j].getPos().x, deco[i][j].getPos().y, null );
             }//inner for
         }//for
     }//func
+
+    private void drawDeco(){
+        g = state.getGraphics();
+        for( int i = 0; i < tiles.length; i++ ) {
+            for (int j = 0; j < tiles[i].length; j++) {
+                g.drawImage( deco2[i][j].getSprite(), deco[i][j].getPos().x, deco[i][j].getPos().y, null );
+            }//inner for
+        }//for
+    }
 
     private void drawSquares(){	
         g.setColor( new Color(21, 104, 64));
@@ -99,7 +109,7 @@ public class World extends JComponent implements  GameState {
             		x = (i*64)-32;
             		y = ( j*16 )-16;
             		g.drawLine( x, y, x+64, y + 32 );
-                         g.setColor( new Color(18, 89, 26));
+                    g.setColor( new Color(18, 89, 26));
             		g.drawLine( x, y,x+64, y-32);
             	}
             }//inner for
@@ -124,28 +134,42 @@ public class World extends JComponent implements  GameState {
         
         jugador.setOrigin( 24, 40 );
     }
-	
+
+    private void drawPlayer(){
+        if ( anim.getCurrentSheet() == 0 )
+            idle();
+        if( anim.getCurrentSheet() == 1 )
+            move();
+        if( anim.getCurrentSheet() == 2 )
+            attack();
+    }
+
 	@Override public void draw(){
-        //System.out.println( "World draw" );
+        if( firstCall ){
+            CurrentData.initCanvas();
+            firstCall = false;
+        }
+        System.out.println( "World draw" );
 		g = state.getGraphics();
 
         //ESCENARIO ---------------------
-		drawMap();     
+        debug();
+		drawMap();
 		drawSquares();
-		debug();
 		// ------------------------------
-                     
-        // JUGADOR ---------------------  
-		if ( anim.getCurrentSheet() == 0 )
-            idle();
-		if( anim.getCurrentSheet() == 1 )
-            move();
-		if( anim.getCurrentSheet() == 2 )
-            attack();
-		// ------------------------------	
-		/*g.setColor(Color.white);
-		g.fillRect(40, 32, 100, 100);*/
-		
+
+        // JUGADOR ---------------------
+        drawPlayer();
+        /*if( pos.y > deco2[iso.x][iso.y].getPos().y ) {
+            drawDeco();
+            drawPlayer();
+        }else{
+            drawPlayer();
+            drawDeco();
+        }*/
+
+		// ------------------------------
+        drawDeco();
 	}
 	
 	@Override public void menu() {

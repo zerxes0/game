@@ -114,17 +114,8 @@ public class Level {
         initTiles();
         initDeco(index);
         systems.MapLoader.loadMap(level[0]);
-       /* for( int i = 0; i < deco.length; i++ ) {
-            for (int j = 0; j < deco[i].length; j++) {
-                if( deco[i][j].getSprite() != null ){
-                    deco[i][j].setSolid(true);
-                }
-            }
-        }*/
-
     }
     
-
     public static GameMap getLevel( int index ){ return level[index];}
     public static Tile[][] getDeco( int index ){ return deco; }
 }

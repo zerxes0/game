@@ -54,6 +54,10 @@ public class MapLoader {
                 loadTileType32(x, y);
                 System.out.print("("+ x +","+ y +")");
                 lvlTiles[i][j].setSprite(tiles);
+                if( layerName == "capa1" && ( x == 0 && y == 0) )
+                    lvlTiles[i][j].setSolid(false);
+                else if( layerName == "capa1" && y != 0 )
+                    lvlTiles[i][j].setSolid(true);
                 tile++;
             }
         }
