@@ -78,6 +78,8 @@ public class World extends JComponent implements  GameState {
     }
 
     private void drawMap(){
+        g.setColor(Color.BLACK);
+        g.fillRect( 0,0,CurrentData.frame.getWidth(), CurrentData.frame.getHeight() );
         for( int i = 0; i < tiles.length; i++ ){
             for(int j = 0; j < tiles[i].length; j++ ){
                 g.drawImage( tiles[i][j].getSprite(), tiles[i][j].getPos().x, tiles[i][j].getPos().y, null );
@@ -108,8 +110,10 @@ public class World extends JComponent implements  GameState {
         jugador.toIso();
         System.out.println("j:( " + pos.x + ", " + pos.y + " ) " );
         System.out.println("jugador ( " + (row) + ", " + (col) + " )" + 
-        		"[ " + (row/64) + ", " + (col/16) + " ]" + "iso x,y( " + (iso.y) + ", " + (iso.x) + " )"); 
-        
+        		"[ " + (row/64) + ", " + (col/16) + " ]" + "iso x,y( " + (iso.y) + ", " + (iso.x) + " )");
+
+        System.out.println( deco[4][6].getPos().x + "," + deco[4][6].getPos().y );
+
         int x = deco[3][6].getPos().x;
         int y = deco[3][6].getPos().y;
         
@@ -129,7 +133,7 @@ public class World extends JComponent implements  GameState {
         g.fillRect( (int)jugador.getBounds().getX(), (int)jugador.getBounds().getY(), (int)jugador.getBounds().getWidth(),
                 (int)jugador.getBounds().getHeight() );
         
-        jugador.setOrigin( 24, 40 );       
+        jugador.setOrigin( 24, 40 );
     }
 	
 	@Override public void draw(){

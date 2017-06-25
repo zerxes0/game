@@ -38,17 +38,17 @@ public class ListenKeys implements KeyListener {
         try{
             switch( axis ){
                 case "up":
-                    aux.setLocation(aux.x = deco[iso.x][iso.y-1].getPos().x, aux.y = deco[iso.x][iso.y-1].getPos().y);
-                    return ( deco[iso.x][iso.y-1].isSolid() ) ? jugador.checkCollision( aux.x, aux.y ) : false;
+                    aux.setLocation(aux.x = deco[iso.y-1][iso.x].getPos().x, aux.y = deco[iso.y-1][iso.x].getPos().y);
+                    return deco[iso.y - 1][iso.x].isSolid() && jugador.checkCollision(aux.x, aux.y);
                 case "down":
-                    aux.setLocation(aux.x = deco[iso.x][iso.y+1].getPos().x, aux.y = deco[iso.x][iso.y+1].getPos().y);
-                    return ( deco[iso.x][iso.y+1].isSolid() ) ? jugador.checkCollision( aux.x, aux.y ) : false;
+                    aux.setLocation(aux.x = deco[iso.y+1][iso.x].getPos().x, aux.y = deco[iso.y+1][iso.x].getPos().y);
+                    return deco[iso.y + 1][iso.x].isSolid() && jugador.checkCollision(aux.x, aux.y);
                 case "left":
-                    aux.setLocation(aux.x = deco[iso.x-1][iso.y].getPos().x, aux.y = deco[iso.x-1][iso.y].getPos().y);
-                    return ( deco[iso.x-1][iso.y].isSolid() ) ? jugador.checkCollision( aux.x, aux.y ) : false;
+                    aux.setLocation(aux.x = deco[iso.y][iso.x-1].getPos().x, aux.y = deco[iso.y][iso.x-1].getPos().y);
+                    return deco[iso.y][iso.x-1].isSolid() && jugador.checkCollision(aux.x, aux.y);
                 case "right":
-                    aux.setLocation(aux.x = deco[iso.x+1][iso.y].getPos().x, aux.y = deco[iso.x+1][iso.y].getPos().y);
-                    return ( deco[iso.x+1][iso.y].isSolid() ) ? jugador.checkCollision( aux.x, aux.y ) : false;
+                    aux.setLocation(aux.x = deco[iso.y][iso.x+1].getPos().x, aux.y = deco[iso.y][iso.x+1].getPos().y);
+                    return deco[iso.y][iso.x+1].isSolid() && jugador.checkCollision(aux.x, aux.y);
                 default:
                     return false;
         }

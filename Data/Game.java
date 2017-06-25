@@ -27,10 +27,6 @@ public class Game{
     	window = new GameFrame();
     	window.init( (int) dimension.getWidth(), (int) dimension.getHeight() );
     	gameStateMachine = new GameStateManager( dimension );
-        KeyListener[] l = gameStateMachine.getComponent().getKeyListeners();
-        window.getCanvas().addKeyListener( l[0]);
-        window.getCanvas().requestFocus();
-        window.getCanvas().createBufferStrategy(2);
     }
 
     private void update(){    	
@@ -53,6 +49,10 @@ public class Game{
     		menu();
             // no queremos que bs = buffer se  inicialize hasta que el juego
             // deje de estar en el menu, por eso hemos creado el loop infinito en menu();
+			KeyListener[] l = gameStateMachine.getComponent().getKeyListeners();
+			window.getCanvas().addKeyListener( l[0]);
+			window.getCanvas().requestFocus();
+			window.getCanvas().createBufferStrategy(2);
 			System.out.println("Menu stopped");
     		bs = window.getCanvas().getBufferStrategy();
     	}

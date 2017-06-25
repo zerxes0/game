@@ -67,10 +67,10 @@ public class Player extends Character {
     public boolean checkCollision( int colX, int colY ){
             int x = (int) ( collider.getBounds().getX() );
             int y = (int) ( collider.getBounds().getY() );
-            int py0 = colY+16, px0 = colX;
-            int py1 = colY, px1 = colX +32 ;
-            int py2 = colY+32, px2 = colX + 32;
-            int py3 = colY+16, px3 = colX+64;          
+            int px0 = colX, py0 = colY+16;
+            int px1 = colX+32, py1 = colY;
+            int px2 = colX+32, py2 = colY+32;
+            int px3 = colX+64, py3 = colY+16;
             
             x /= 64; y /= 16;
             x *= 64; y *= 16;
@@ -78,25 +78,16 @@ public class Player extends Character {
             System.out.println();
 
             //PIXEL PERFECT COLLITIONS
-            boolean p0 = (x == px0 || y == py0) || (x*2 == px0 || y == py0) || (x == px0 || y*2 == py0) || (x*2 == px0 || y*2 == py0);
-            boolean p1 = (x == px1 || y == py1) || (x*2 == px1 || y == py1) || (x == px1 || y*2 == py1) || (x*2 == px1 || y*2 == py1);
-            boolean p2 = (x == px2 || y == py2) || (x*2 == px2 || y == py2) || (x == px2 || y*2 == py2) || (x*2 == px2 || y*2 == py2);
-            boolean p3 = (x == px3 || y == py3) || (x*2 == px3 || y == py3) || (x == px3 || y*2 == py3) || (x*2 == px3 || y*2 == py3);
+            boolean p0 = (x >= px0 || y >= py0) || (x*2 >= px0 || y >= py0) || (x >= px0 || y*2 >= py0) || (x*2 >= px0 || y*2 >= py0);
+            boolean p1 = (x >= px1 || y >= py1) || (x*2 >= px1 || y >= py1) || (x >= px1 || y*2 >= py1) || (x*2 >= px1 || y*2 >= py1);
+            boolean p2 = (x >= px2 || y >= py2) || (x*2 >= px2 || y >= py2) || (x >= px2 || y*2 >= py2) || (x*2 >= px2 || y*2 >= py2);
+            boolean p3 = (x >= px3 || y >= py3) || (x*2 >= px3 || y >= py3) || (x >= px3 || y*2 >= py3) || (x*2 >= px3 || y*2 >= py3);
             boolean colFromBottom =  (p0 || p2 || p3);
-            boolean colFromLeft = (p0 || p1 || p2);
-            boolean colFromRight = (p2 || p1 || p2);
             boolean colFromUp = (p0 || p1 || p3);
 
             if( colFromBottom )
                 return true;
-            else if( colFromLeft )
-                return true;
-            else if( colFromRight )
-                return true;
-            else if( colFromUp  )
-                return true;
-
-            return false;
+            else return colFromUp;
     }
     
     public void updateBounds(){ collider.updateBound(pos.x, pos.y); }

@@ -87,36 +87,31 @@ public class Level {
         }
     }//func
 
-    private static void setDeco( int x, int y){
+    private static void setDeco( int x, int y, boolean state ){
         deco[y][x].setSprite(tiles);
+        deco[y][x].setSolid(state);
     }
 
     private static void initDeco( int index ){
         deco = level[index].getDeco();
         
         loadTileType32( index, 7 , 17 ); //medio
-        setDeco( 4,4 ); //medio 
-        deco[4][4].setSolid(true);
+        setDeco(4, 4, true); //medio 
         
         loadTileType32( index, 9 , 17 ); //esquina derecha
-        setDeco(4,3); //esquina derecha
-        deco[4][3].setSolid(true);
+        setDeco(4, 3, true); //esquina derecha
         
         loadTileType32( index, 6, 17 ); //esquina inferior derecha
-        setDeco( 5, 4 ); //esquina inferior derecha
-        deco[5][4].setSolid(true);
+        setDeco(5, 4,true); //esquina inferior derecha
         
         loadTileType32( index, 3, 17 );//esquina superior izquierda
-        setDeco( 3, 5 );// esquina superior izquierda
-        deco[3][5].setSolid(true);
+        setDeco(3, 5, true);// esquina superior izquierda
         
         loadTileType32( index, 0, 17 ); //esquina inferior izquierda
-        setDeco( 4, 6 ); //esquina inferior izquierda
-        deco[4][6].setSolid(true);
+        setDeco(4, 6, true); //esquina inferior izquierda
         
         loadTileType32( index, 2, 17 ); //medio inferior
-        setDeco( 4, 5 );//medio inferior   
-        deco[4][5].setSolid(true);
+        setDeco(4, 5, true);//medio inferior   
     }
 
     private static void level1( String path ){
