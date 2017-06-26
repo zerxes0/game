@@ -79,8 +79,11 @@ public class ListenKeys implements KeyListener {
         if( state.getCurrentState() == state.getBattle() )
             inBattle();
 
-        if( e.getKeyCode() == KeyEvent.VK_E )
-        	state.setGameState( state.getBattle() );
+        if( e.getKeyCode() == KeyEvent.VK_E  && state.getCurrentState() != state.getBattle()) {
+            jugador.toIso();
+            jugador.getPos().setLocation( deco[iso.y][iso.x].getPos() );
+            state.setGameState(state.getBattle());
+        }
     }//func
 
     private void inWorld(){
@@ -111,32 +114,32 @@ public class ListenKeys implements KeyListener {
 
     private void inBattle(){
         aux = jugador.getPos();
-        int x = deco[iso.y][iso.x].getPos().x;
-        int y = deco[iso.y][iso.x].getPos().y;
-        pos.setLocation( x+100 , y+16 ); // Point(x,y)
+        int x = (int)deco[iso.y][iso.x].getPos().getX();
+        int y = (int)deco[iso.y][iso.x].getPos().getY();
+        aux.x = x; aux.y = y;
         System.out.println("reach");
         if( up ){
             if ( currentPos == Pos.MID ){
             	System.out.println(" mid to top");
                 currentPos = Pos.TOP;
-                aux.setLocation( pos.x - 32, pos.y - 16 );
+                aux.setLocation( aux.x - 32, aux.y - 16 );
                 }
             else if( currentPos == Pos.BOT ){
             	System.out.println("bot to mid");
                 currentPos = Pos.MID;
-                aux.setLocation( pos.x + 32, pos.y - 16 );
+                aux.setLocation( aux.x + 32, aux.y - 16 );
             }
         }
         if( down ){
             if( currentPos == Pos.TOP ){
             	System.out.println("top to mid");
                 currentPos = Pos.MID;
-                aux.setLocation( pos.x + 32, pos.y + 16 );
+                aux.setLocation( aux.x + 32, aux.y + 16 );
             }
             else if ( currentPos == Pos.MID ){
             	System.out.println("mid to bot");
                 currentPos = Pos.BOT;
-                aux.setLocation( pos.x - 32, pos.y + 16 );
+                aux.setLocation( aux.x - 32, aux.y + 16 );
                 }
         }
 
