@@ -28,11 +28,11 @@ public class ListenKeys implements KeyListener {
     public ListenKeys(){
     	state = CurrentData.state;
         jugador = CurrentData.jugador;
-        deco = CurrentData.deco;
-        anim = CurrentData.anim;
-        iso = CurrentData.iso;
-        aux = CurrentData.aux;
-    }  
+        deco = CurrentData.lvl.getLayer1();
+        anim = CurrentData.jugador.getAnimation();
+        iso = CurrentData.jugador.getIso();
+        aux =  new Point();
+    }
     
     private boolean checkCollision( String axis ){
         try{
@@ -111,7 +111,9 @@ public class ListenKeys implements KeyListener {
 
     private void inBattle(){
         aux = jugador.getPos();
-        pos.setLocation( aux.y , aux.x ); // Point(x,y)
+        int x = deco[iso.y][iso.x].getPos().x;
+        int y = deco[iso.y][iso.x].getPos().y;
+        pos.setLocation( x+100 , y+16 ); // Point(x,y)
         System.out.println("reach");
         if( up ){
             if ( currentPos == Pos.MID ){

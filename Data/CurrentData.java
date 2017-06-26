@@ -19,9 +19,6 @@ public class CurrentData {
     public static Player jugador;
     public static ListenKeys lKey;
     public static GameMap lvl;
-    public static Tile[][] tiles, deco;
-    public static Animator anim;    
-    public static Point iso, pos, origin, aux;  
     public static GameFrame frame;
     public static JPanel menuPanel;
     public static JPanel panel;

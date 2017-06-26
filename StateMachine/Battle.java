@@ -8,6 +8,7 @@ import java.awt.Point;
 import Data.CurrentData;
 import entity.Player;
 import maps.Tile;
+import org.omg.CORBA.Current;
 import systems.Animator;
 
 @SuppressWarnings("serial")
@@ -17,10 +18,10 @@ public class Battle implements GameState {
 	private GameStateManager state;
     private boolean inBattle = false;
     //--------------------------
-	
+
     //AUXILIAR FIELDS ----------
     private Player jugador;
-    private Tile[][] tiles, deco;
+    private Tile[][] tiles, deco,deco2;
     private Graphics g;
     private Animator anim;
 
@@ -30,10 +31,10 @@ public class Battle implements GameState {
     //
     Battle(GameStateManager newGameState){
 		state = newGameState;
-        //this.setFocusable(true);     
-        //this.addKeyListener( lKey ); 
+        //this.setFocusable(true);
+        //this.addKeyListener( lKey );
 	}
-	
+
     private void idle(){
         //aqui esta idle, idle en nuestro contexto
         //se usar para animacion default y walking
@@ -45,7 +46,7 @@ public class Battle implements GameState {
         //se usar para animacion default y walking
 		g.drawImage( anim.getSprites( anim.getCurrentSheet() ).crop( anim.state() , 0, 64, 64), pos.x , pos.y, null );
     }
-    
+
     private void attack(){
 		g.drawImage( anim.getSprites(2).crop( anim.state(), 0, 96, 96), pos.x, pos.y-38, null );
 		if( anim.state() >= 800 ) // el limite de la sprite sheet es 800 asi que al llegar se acabo el ataque
@@ -53,6 +54,9 @@ public class Battle implements GameState {
     }
 
     private void drawMap(){
+        g = state.getGraphics();
+        g.setColor(Color.BLACK);
+        g.fillRect( 0,0,CurrentData.frame.getWidth(), CurrentData.frame.getHeight() );
         for( int i = 0; i < tiles.length; i++ ){
             for(int j = 0; j < tiles[i].length; j++ ){
                 g.drawImage( tiles[i][j].getSprite(), tiles[i][j].getPos().x, tiles[i][j].getPos().y, null );
@@ -61,20 +65,38 @@ public class Battle implements GameState {
         }//for
     }//func
 
-    private void drawSquares(){	
-        g.setColor( Color.white );
+    private void drawSquares(){
+        g.setColor( new Color(21, 104, 64));
         int x,y;
-        for( int i = 0; i <= 15; i++ ){
-            for(int j = 0; j <= 41 ; j++ ){
-            	if ( j%2 != 0 ){ 
-            		x = (i*64)-32;
-            		y = ( j*16 )-16;
-            		g.drawLine( x, y, x+64, y + 32 );
-            		g.drawLine( x, y,x+64, y-32);
-            	}
+        for( int i = 0; i <= 14; i++ ){
+            for(int j = 0; j <= 39 ; j++ ){
+                if ( j%2 != 0 ){
+                    x = (i*64)-32;
+                    y = ( j*16 )-16;
+                    g.drawLine( x, y, x+64, y + 32 );
+                    g.setColor( new Color(18, 89, 26));
+                    g.drawLine( x, y,x+64, y-32);
+                }
             }//inner for
         }//for
-              
+    } //func
+
+    private void drawDeco(){
+        g = state.getGraphics();
+        for( int i = 0; i < tiles.length; i++ ) {
+            for (int j = 0; j < tiles[i].length; j++) {
+                g.drawImage( deco2[i][j].getSprite(), deco[i][j].getPos().x, deco[i][j].getPos().y, null );
+            }//inner for
+        }//for
+    }
+
+    private void drawPlayer(){
+        if ( anim.getCurrentSheet() == 0 )
+            idle();
+        if( anim.getCurrentSheet() == 1 )
+            move();
+        if( anim.getCurrentSheet() == 2 )
+            attack();
     }
 
 	@Override
@@ -85,24 +107,18 @@ public class Battle implements GameState {
 			g.dispose();
 		}
         //System.out.println( "Battle draw" );
-		g = state.getGraphics();		
-		
+		g = state.getGraphics();
         //ESCENARIO ---------------------
-		drawMap();     
+		drawMap();
         drawSquares();
 		//debug();
-		
 		// ------------------------------
-        
-        // JUGADOR ---------------------  
-		    if ( anim.getCurrentSheet() == 0 )
-                idle();
-		    if( anim.getCurrentSheet() == 1 )
-		    	move();
-		    if( anim.getCurrentSheet() == 2 )
-                attack();
-		// ------------------------------		
-		    
+
+        // JUGADOR ---------------------
+        drawPlayer();
+		// ------------------------------
+
+        drawDeco();
 	}
 	
 	@Override
@@ -120,10 +136,11 @@ public class Battle implements GameState {
 	@Override
 	public void battle() {
         jugador = CurrentData.jugador;
-        tiles = CurrentData.tiles;
-        deco = CurrentData.deco;
-        anim = CurrentData.anim;
-        pos = CurrentData.pos;
+        tiles = CurrentData.lvl.getTiles();
+        deco = CurrentData.lvl.getLayer1();
+        deco2 = CurrentData.lvl.getLayer2();
+        anim = CurrentData.jugador.getAnimation();
+        pos = CurrentData.jugador.getPos();
         //lKey = CurrentData.lKey;
 	}
 

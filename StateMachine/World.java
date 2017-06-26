@@ -193,13 +193,6 @@ public class World extends JComponent implements  GameState {
 	private void setData(){
         CurrentData.jugador = jugador;
         CurrentData.lvl = lvl;
-        CurrentData.tiles = tiles;
-        CurrentData.deco = deco;
-        CurrentData.anim = anim;
-        CurrentData.pos = pos;
-        CurrentData.iso = iso;
-        CurrentData.aux = aux;
-        CurrentData.origin = origin;
         CurrentData.lKey = lKey;
         CurrentData.state = state;
 	}
