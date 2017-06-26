@@ -124,15 +124,12 @@ public class World extends JComponent implements  GameState {
         System.out.println("jugador ( " + (row) + ", " + (col) + " )" + 
         		"[ " + (row/64) + ", " + (col/16) + " ]" + "iso x,y( " + (iso.x) + ", " + (iso.y) + " )");
 
-        System.out.println( deco[4][6].getPos().x + "," + deco[4][6].getPos().y );
-
         g.setColor( Color.red );
         g.drawRect(origin.x, origin.y, 64-48, 64-48);
         
         g.fillRect( (int)jugador.getBounds().getX(), (int)jugador.getBounds().getY(), (int)jugador.getBounds().getWidth(),
                 (int)jugador.getBounds().getHeight() );
-        
-        jugador.setOrigin( 24, 40 );
+
     }
 
     private void drawPlayer(){
@@ -144,6 +141,8 @@ public class World extends JComponent implements  GameState {
             attack();
     }
 
+
+    private boolean overLap = false;
 	@Override public void draw(){
         if( firstCall ){
             CurrentData.initCanvas();
@@ -159,17 +158,17 @@ public class World extends JComponent implements  GameState {
 		// ------------------------------
 
         // JUGADOR ---------------------
-        drawPlayer();
-        /*if( pos.y > deco2[iso.x][iso.y].getPos().y ) {
-            drawDeco();
-            drawPlayer();
-        }else{
-            drawPlayer();
-            drawDeco();
-        }*/
+        overLap = (origin.y > deco2[iso.y][iso.x].getPos().y) && deco2[iso.y][iso.x].isOverLapAble() &&
+                !deco2[iso.y - 1][iso.x].isOverLapAble() && !deco2[iso.y + 1][iso.x].isOverLapAble();
 
+        if( overLap){
+            drawPlayer();
+            drawDeco();
+        }else{
+            drawDeco();
+            drawPlayer();
+        }
 		// ------------------------------
-        drawDeco();
 	}
 	
 	@Override public void menu() {

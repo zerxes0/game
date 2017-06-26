@@ -36,7 +36,17 @@ public class MapLoader {
     	    }
     	    return stringArray;
     }
-    
+
+    private static boolean validNumber( int number ){
+        //debido a que si un numero esta en la ultima columna
+        //del spritesheet el algoritmo para parsear de json a
+        //no traduce correctamente, este algoritmo hace un pequeÑo fix.
+        if( number != 0 ){
+            return  ( number%10 == 0) ? false : true;
+        }
+        return true;
+    }
+
 	private static void parse( JSONArray jArray, String layerName){
         Tile[][] lvlTiles = null;
         if(layerName == "fondo") lvlTiles = level.getTiles();
@@ -49,8 +59,12 @@ public class MapLoader {
        System.out.print( aux.length );
         for( int i = 0; i < lvlTiles.length; i++ ){
             for( int j = 0; j < lvlTiles[i].length; j++ ){
-                x = ( aux[tile]%10 > 0) ? (aux[tile]%10)-1 : aux[tile]%10;
+                x = ( aux[tile]%10 > 0) ? (aux[tile]%10)-1: aux[tile]%10;
                 y = (aux[tile]/10);
+                if( !validNumber( aux[tile] )){
+                    x = 9;
+                    y = (aux[tile]/10)-1;
+                }
                 loadTileType32(x, y);
                 System.out.print("("+ x +","+ y +")");
                 lvlTiles[i][j].setSprite(tiles);
@@ -58,11 +72,13 @@ public class MapLoader {
                     lvlTiles[i][j].setSolid(false);
                 else if( layerName == "capa1" && y != 0 )
                     lvlTiles[i][j].setSolid(true);
+
+                if( layerName == "capa2" && y != 0 )
+                    lvlTiles[i][j].setOverLap(true);
                 tile++;
             }
         }
        //System.out.println(tile);
-
 	}
 	
     public static void loadMap( GameMap level ){
@@ -82,15 +98,15 @@ public class MapLoader {
             JSONObject aux = (JSONObject) layers.get(0);
             //System.out.println( fondo.get("name").toString() );
             if( aux.get("name").toString().contains("Fondo") ){
-                System.out.println( aux.get("data") );
+                //System.out.println( aux.get("data") );
                 fondo = (JSONArray) aux.get("data");
-                System.out.println(fondo);
+                //System.out.println(fondo);
                 parse(fondo,"fondo");
             }
 
             aux = (JSONObject) layers.get(1);
             if( aux.get("name").toString().contains("capa1") ){
-                System.out.println( aux.get("data") );
+                //System.out.println( aux.get("data") );
                 capa1 = (JSONArray) aux.get("data");
                 System.out.println(capa1);
                 parse(capa1 , "capa1");
@@ -98,9 +114,9 @@ public class MapLoader {
 
             aux = (JSONObject) layers.get(2);
             if( aux.get("name") .toString().contains("capa2")){
-                System.out.println( aux.get("data") );
+                //System.out.println( aux.get("data") );
                 capa2 = (JSONArray) aux.get("data");
-                System.out.println(capa1);
+                //System.out.println(capa1);
                 parse(capa2, "capa2");
         }
 
